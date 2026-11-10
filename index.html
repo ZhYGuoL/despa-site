@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Despa · Revisión de documentos de importación</title>
+<meta name="description" content="Despa compara los documentos de cada embarque entre sí y con tus reglas, y escribe a cada proveedor lo que tiene que corregir.">
+<link rel="icon" href="assets/despa-mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="top wrap">
+  <a class="brand" href="#" aria-label="Despa">
+    <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><rect x="14" y="12" width="56.18" height="11.6" rx="2.5"/><rect x="14" y="28.1" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="44.2" width="74" height="11.6" rx="2.5"/><rect x="14" y="60.3" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="76.4" width="56.18" height="11.6" rx="2.5"/></g></svg>
+    <span>despa</span>
+  </a>
+  <div class="lang" role="group" aria-label="Idioma / Language">
+    <button type="button" data-lang="es" aria-pressed="true">ES</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main>
+
+<section class="hero wrap">
+  <h1 data-t="h1">Revisión de documentos de importación</h1>
+  <p class="lede" data-t="lede">Despa compara los documentos de cada embarque entre sí y con tus reglas, y escribe a cada proveedor lo que tiene que corregir.</p>
+  <p class="lede2" data-t="lede2">Funciona en tu Mac. Los documentos no salen de tu computador.</p>
+  <a class="btn" href="#lista" data-t="cta">Unirme a la lista de espera</a>
+</section>
+
+<section class="wrap film">
+  <video controls preload="none" playsinline poster="assets/poster.jpg" src="assets/despa.mp4" aria-label="Despa"></video>
+</section>
+
+<section class="wrap block" aria-labelledby="t-compare">
+  <h2 id="t-compare" data-t="compare.h">Comparación entre documentos</h2>
+  <div class="panel rule">
+    <div class="rule-head">
+      <span class="num">R1</span>
+      <span class="rule-title" data-t="compare.rule">Nombre y dirección del consignatario</span>
+      <span class="badge red" data-t="fail">INCORRECTO</span>
+    </div>
+    <table class="vals">
+      <tbody>
+        <tr class="bad"><th data-t="doc.invoice">Factura comercial</th><td><span class="v">MANZANA 3 GALPON</span></td><td class="sign">≠</td></tr>
+        <tr class="bad"><th data-t="doc.packing">Lista de empaque</th><td><span class="v">MANZANA 3 GALPON</span></td><td class="sign">≠</td></tr>
+        <tr><th data-t="doc.bl">Conocimiento de embarque</th><td><span class="v">MANZANA 3 GALPON 4</span></td><td class="sign"></td></tr>
+        <tr><th data-t="doc.formf">Certificado de origen (Formulario F)</th><td><span class="v">MANZANA 3 GALPON 4</span></td><td class="sign"></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="wrap block" aria-labelledby="t-message">
+  <div class="head-row">
+    <h2 id="t-message" data-t="message.h">Mensaje al proveedor</h2>
+    <div class="seg" role="group" aria-label="Idioma del mensaje">
+      <button type="button" data-msg="zh" aria-pressed="true">中文</button>
+      <button type="button" data-msg="es" aria-pressed="false">Español</button>
+      <button type="button" data-msg="en" aria-pressed="false">English</button>
+    </div>
+  </div>
+  <article class="paper" lang="zh" id="msg">
+    <p>您好！</p>
+    <p>我们核对了这票货的单据。请修改以下内容。</p>
+    <dl>
+      <dt>商业发票 · 收货人</dt><dd><span class="v">MANZANA 3 GALPON</span> → <span class="v">MANZANA 3 GALPON 4</span></dd>
+      <dt>装箱单 · 收货人</dt><dd><span class="v">MANZANA 3 GALPON</span> → <span class="v">MANZANA 3 GALPON 4</span></dd>
+    </dl>
+    <p>请发给我们以下单据：</p>
+    <ul><li>商业发票（修改后）</li><li>装箱单（修改后）</li></ul>
+    <p>谢谢！</p>
+  </article>
+</section>
+
+<section class="wrap block" aria-labelledby="t-what">
+  <h2 id="t-what" data-t="what.h">Qué hace</h2>
+  <dl class="facts">
+    <div><dt data-t="f1.t">Documentos del embarque</dt><dd data-t="f1.d">Factura, lista de empaque, conocimiento de embarque y certificado de origen, en PDF, Excel, Word o escaneados.</dd></div>
+    <div><dt data-t="f2.t">Tus reglas</dt><dd data-t="f2.d">Consignatario, puertos, términos de precio, flete en el BL. Cada importador las define en una pantalla, sin código.</dd></div>
+    <div><dt data-t="f3.t">TLC Chile–China</dt><dd data-t="f3.d">Revisa el Formulario F: emisor, códigos SA contra la factura, validez y criterio de origen.</dd></div>
+    <div><dt data-t="f4.t">Mensaje por proveedor</dt><dd data-t="f4.d">En chino, español o inglés, con los documentos corregidos que tiene que enviar.</dd></div>
+    <div><dt data-t="f5.t">Versiones</dt><dd data-t="f5.d">Cuando llega un documento corregido, lo compara con el anterior y cierra lo que quedó resuelto.</dd></div>
+    <div><dt data-t="f6.t">Historial por proveedor</dt><dd data-t="f6.d">Recuerda los errores que repite cada proveedor.</dd></div>
+    <div><dt data-t="f7.t">Cada valor con su página</dt><dd data-t="f7.d">Un clic lleva a la página del documento de donde salió el valor.</dd></div>
+  </dl>
+</section>
+
+<section class="wrap block" id="lista" aria-labelledby="t-wait">
+  <h2 id="t-wait" data-t="wait.h">Lista de espera</h2>
+  <form class="panel form" id="waitlist" novalidate>
+    <label><span data-t="w.email">Correo</span><input type="email" name="email" required autocomplete="email"></label>
+    <label><span data-t="w.company">Empresa</span><input type="text" name="company" required autocomplete="organization"></label>
+    <label><span data-t="w.role">Rol</span>
+      <select name="role" required>
+        <option value="" data-t="w.role.pick">Elige uno</option>
+        <option value="importer" data-t="w.role.importer">Importador</option>
+        <option value="broker" data-t="w.role.broker">Agente de aduanas</option>
+        <option value="trading" data-t="w.role.trading">Oficina de trading o compras</option>
+        <option value="other" data-t="w.role.other">Otro</option>
+      </select>
+    </label>
+    <label><span data-t="w.country">País</span><input type="text" name="country" required autocomplete="country-name" value="Chile"></label>
+    <div class="form-foot">
+      <button class="btn" type="submit" data-t="w.submit">Unirme</button>
+      <p class="note" id="w-status" role="status" aria-live="polite"></p>
+    </div>
+  </form>
+  <div class="panel done" id="w-done" hidden>
+    <span class="badge green" data-t="w.ok">LISTO</span>
+    <p data-t="w.thanks">Te escribimos cuando haya un lugar para tu empresa.</p>
+  </div>
+</section>
+
+<section class="wrap block build">
+  <build-time src="build-time.json" heading="Tiempo de construcción" label-working="Tiempo de trabajo" label-wall="De inicio a fin" label-agent="Tiempo de agentes"></build-time>
+</section>
+
+</main>
+
+<footer class="wrap foot">
+  <span>© 2026 Despa</span>
+</footer>
+
+<script src="assets/build-time.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

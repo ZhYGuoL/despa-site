@@ -1,0 +1,8 @@
+{
+  "Hero and copy": ["index.html"],
+  "Demo video": ["assets/despa.mp4", "assets/poster.jpg"],
+  "Look": ["assets/site.css", "assets/*.ttf", "assets/despa-mark.svg"],
+  "Languages and supplier message": ["assets/site.js"],
+  "Waitlist": ["assets/site.js#waitlist"],
+  "Build time": ["build-time.json", "assets/build-time.js"]
+}
