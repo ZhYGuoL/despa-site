@@ -1,8 +1,26 @@
 {
-  "Hero and copy": ["index.html"],
-  "Demo video": ["assets/despa.mp4", "assets/poster.jpg"],
-  "Look": ["assets/site.css", "assets/*.ttf", "assets/despa-mark.svg"],
-  "Languages and supplier message": ["assets/site.js"],
-  "Waitlist": ["assets/site.js#waitlist"],
-  "Build time": ["build-time.json", "assets/build-time.js"]
+ "Contexto y diseño / Context and design": [
+  "DESIGN.md (read)"
+ ],
+ "Lista de espera / Waitlist": [
+  "assets/site.js"
+ ],
+ "Video": [
+  "assets/despa.mp4",
+  "assets/poster.jpg"
+ ],
+ "Textos / Copy": [
+  "index.html"
+ ],
+ "Diseño visual / Look": [
+  "assets/site.css",
+  "assets/*.ttf",
+  "assets/despa-mark.svg"
+ ],
+ "Idiomas y mensaje al proveedor / Languages and supplier message": [
+  "assets/site.js"
+ ],
+ "Revisión en pantalla / Preview and fixes": [
+  "*"
+ ]
 }
