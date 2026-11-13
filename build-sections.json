@@ -1,23 +1,19 @@
 {
- "Contexto y diseño / Context and design": [
-  "DESIGN.md (read)"
+ "Contexto y sistema de diseño / Context and design system": [
+  "DESIGN.md (read)",
+  "skills (read)"
  ],
- "Lista de espera / Waitlist": [
-  "assets/site.js"
+ "Textos y fuentes / Copy and fonts": [
+  "index.html",
+  "assets/Geist-*.woff2"
  ],
- "Video": [
-  "assets/despa.mp4",
-  "assets/poster.jpg"
- ],
- "Textos / Copy": [
+ "Página y figura del producto / Page and product figure": [
   "index.html"
  ],
- "Diseño visual / Look": [
-  "assets/site.css",
-  "assets/*.ttf",
-  "assets/despa-mark.svg"
+ "Estilos / Styles": [
+  "assets/site.css"
  ],
- "Idiomas y mensaje al proveedor / Languages and supplier message": [
+ "Idiomas, mensaje y lista de espera / Languages, message and waitlist": [
   "assets/site.js"
  ],
  "Revisión en pantalla / Preview and fixes": [

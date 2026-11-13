@@ -1,86 +1,68 @@
 {
  "title": "Despa",
- "start": "2026-11-10T15:15:30-05:00",
- "end": "2026-11-10T15:27:00-05:00",
- "activeMinutes": 11.5,
- "wallMinutes": 11.5,
- "agentMinutes": 11.5,
+ "start": "2026-11-12T21:46:00-05:00",
+ "end": "2026-11-12T21:57:00-05:00",
+ "activeMinutes": 11,
+ "wallMinutes": 11,
+ "agentMinutes": 11,
  "sections": [
   {
-   "name": "Contexto y diseño",
+   "name": "Contexto y sistema de diseño",
+   "activeMinutes": 3,
+   "spans": [
+    [
+     0,
+     3
+    ]
+   ]
+  },
+  {
+   "name": "Textos y fuentes",
+   "activeMinutes": 2,
+   "spans": [
+    [
+     3,
+     5
+    ]
+   ]
+  },
+  {
+   "name": "Página y figura del producto",
    "activeMinutes": 1.5,
    "spans": [
     [
-     0.0,
-     1.5
+     5,
+     6.5
     ]
    ]
   },
   {
-   "name": "Lista de espera",
-   "activeMinutes": 2.166666666666666,
+   "name": "Estilos",
+   "activeMinutes": 1.0,
    "spans": [
     [
-     1.5,
-     3.25
-    ],
-    [
-     8.5,
-     8.916666666666666
+     6.5,
+     7.5
     ]
    ]
   },
   {
-   "name": "Video",
-   "activeMinutes": 2.75,
-   "spans": [
-    [
-     3.25,
-     6.0
-    ]
-   ]
-  },
-  {
-   "name": "Textos",
-   "activeMinutes": 1.25,
-   "spans": [
-    [
-     6.0,
-     7.25
-    ]
-   ]
-  },
-  {
-   "name": "Diseño visual",
+   "name": "Idiomas, mensaje y lista de espera",
    "activeMinutes": 0.5,
    "spans": [
     [
-     7.25,
-     7.75
-    ]
-   ]
-  },
-  {
-   "name": "Idiomas y mensaje al proveedor",
-   "activeMinutes": 0.4166666666666661,
-   "spans": [
-    [
-     7.75,
-     8.166666666666666
+     7.5,
+     8
     ]
    ]
   },
   {
    "name": "Revisión en pantalla",
-   "activeMinutes": 2.916666666666668,
+   "activeMinutes": 3,
    "spans": [
     [
-     8.166666666666666,
-     8.5
-    ],
-    [
-     8.916666666666666,
-     11.5
+     8,
+     11
     ]
    ]
   }

@@ -4,125 +4,358 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Despa · Revisión de documentos de importación</title>
-<meta name="description" content="Despa compara los documentos de cada embarque entre sí y con tus reglas, y escribe a cada proveedor lo que tiene que corregir.">
+<meta name="description" content="Despa compara los documentos de cada embarque entre sí y con sus reglas, y escribe a cada proveedor lo que tiene que corregir.">
+<meta property="og:title" content="Despa · Revisión de documentos de importación">
+<meta property="og:description" content="Despa compara los documentos de cada embarque entre sí y con sus reglas, y escribe a cada proveedor lo que tiene que corregir.">
 <link rel="icon" href="assets/despa-mark.svg" type="image/svg+xml">
+<link rel="preload" href="assets/Geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
-<header class="top wrap">
+<div class="frame">
+
+<header class="top">
   <a class="brand" href="#" aria-label="Despa">
     <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><rect x="14" y="12" width="56.18" height="11.6" rx="2.5"/><rect x="14" y="28.1" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="44.2" width="74" height="11.6" rx="2.5"/><rect x="14" y="60.3" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="76.4" width="56.18" height="11.6" rx="2.5"/></g></svg>
     <span>despa</span>
   </a>
-  <div class="lang" role="group" aria-label="Idioma / Language">
-    <button type="button" data-lang="es" aria-pressed="true">ES</button>
-    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  <nav class="nav" aria-label="Secciones">
+    <a href="#como" data-t="nav.how">Cómo funciona</a>
+    <a href="#reglas" data-t="nav.rules">Qué revisa</a>
+    <a href="#privacidad" data-t="nav.privacy">Privacidad</a>
+  </nav>
+  <div class="top-right">
+    <div class="seg" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn-sm" href="#lista" data-t="nav.cta">Lista de espera</a>
   </div>
 </header>
 
 <main>
 
-<section class="hero wrap">
-  <h1 data-t="h1">Revisión de documentos de importación</h1>
-  <p class="lede" data-t="lede">Despa compara los documentos de cada embarque entre sí y con tus reglas, y escribe a cada proveedor lo que tiene que corregir.</p>
-  <p class="lede2" data-t="lede2">Funciona en tu Mac. Los documentos no salen de tu computador.</p>
-  <a class="btn" href="#lista" data-t="cta">Unirme a la lista de espera</a>
-</section>
-
-<section class="wrap film">
-  <video controls preload="none" playsinline poster="assets/poster.jpg" src="assets/despa.mp4" aria-label="Despa"></video>
-</section>
-
-<section class="wrap block" aria-labelledby="t-compare">
-  <h2 id="t-compare" data-t="compare.h">Comparación entre documentos</h2>
-  <div class="panel rule">
-    <div class="rule-head">
-      <span class="num">R1</span>
-      <span class="rule-title" data-t="compare.rule">Nombre y dirección del consignatario</span>
-      <span class="badge red" data-t="fail">INCORRECTO</span>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow" data-t="hero.eyebrow">Importaciones China → Chile</p>
+    <h1 data-t="h1">Revisión de documentos de importación</h1>
+  </div>
+  <div class="hero-side">
+    <p class="lede" data-t="lede">Despa compara la factura, la lista de empaque, el conocimiento de embarque y el certificado de origen de cada embarque, entre sí y con sus reglas. Después escribe a cada proveedor lo que tiene que corregir.</p>
+    <p class="lede2" data-t="lede2">Funciona en su Mac. Los documentos no salen de su computador.</p>
+    <div class="ctas">
+      <a class="btn btn-accent" href="#lista" data-t="cta">Unirme a la lista de espera</a>
+      <a class="link-arrow" href="#pagina" data-t="cta2">Ver un valor en su página</a>
     </div>
-    <table class="vals">
-      <tbody>
-        <tr class="bad"><th data-t="doc.invoice">Factura comercial</th><td><span class="v">MANZANA 3 GALPON</span></td><td class="sign">≠</td></tr>
-        <tr class="bad"><th data-t="doc.packing">Lista de empaque</th><td><span class="v">MANZANA 3 GALPON</span></td><td class="sign">≠</td></tr>
-        <tr><th data-t="doc.bl">Conocimiento de embarque</th><td><span class="v">MANZANA 3 GALPON 4</span></td><td class="sign"></td></tr>
-        <tr><th data-t="doc.formf">Certificado de origen (Formulario F)</th><td><span class="v">MANZANA 3 GALPON 4</span></td><td class="sign"></td></tr>
-      </tbody>
-    </table>
+  </div>
+
+  <figure class="plate plate-hero" aria-labelledby="fig1-cap">
+    <figcaption class="cap" id="fig1-cap"><span class="cap-n">FIG. 1</span><span data-t="fig1.cap">Embarque de ejemplo BST-24117, con datos inventados</span></figcaption>
+    <div class="app">
+      <div class="app-top">
+        <span class="app-brand"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><rect x="14" y="12" width="56.18" height="11.6" rx="2.5"/><rect x="14" y="28.1" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="44.2" width="74" height="11.6" rx="2.5"/><rect x="14" y="60.3" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="76.4" width="56.18" height="11.6" rx="2.5"/></g></svg>despa</span>
+        <span class="app-profile" data-t="app.profile">Perfil: Andes Juguetes SpA</span>
+      </div>
+      <div class="app-body">
+        <div class="app-docs">
+          <p class="app-h" data-t="app.docs">Documentos</p>
+          <ul>
+            <li><span class="file">invoice_BST-24117.pdf</span><span class="dtype" data-t="doc.invoice">Factura comercial</span><span class="pages" data-t="p2">2 páginas</span></li>
+            <li><span class="file">packing_list_BST-24117.pdf</span><span class="dtype" data-t="doc.packing">Lista de empaque</span><span class="pages" data-t="p2">2 páginas</span></li>
+            <li><span class="file">bl_NGBVAP2411.pdf</span><span class="dtype" data-t="doc.bl">Conocimiento de embarque</span><span class="pages" data-t="p1">1 página</span></li>
+            <li><span class="file">form_f_BST-24117.pdf</span><span class="dtype" data-t="doc.formf">Certificado de origen</span><span class="pages" data-t="p1">1 página</span></li>
+          </ul>
+          <span class="app-check" data-t="app.check">Revisar</span>
+        </div>
+        <div class="app-res">
+          <div class="verdict">
+            <span class="badge red" data-t="v.blocked">BLOQUEADO</span>
+            <span class="verdict-n" data-t="v.counts">Bloqueantes: 1 · Por corregir: 2 · Menores: 1 · Por revisar a mano: 2</span>
+          </div>
+          <p class="grp-h"><span data-t="g.decide">Necesita su decisión</span><span class="cnt">5</span></p>
+
+          <details class="r" open>
+            <summary><span class="num">R6</span><span class="rt" data-t="r6">Descripción de las mercancías</span><span class="sev" data-t="sev.block">Bloqueante</span><span class="badge red" data-t="fail">INCORRECTO</span></summary>
+            <div class="dv">
+              <div class="dv-row bad"><span class="dv-doc" data-t="doc.formf">Certificado de origen</span><span class="v">PLUSH TOYS / WOODEN PUZZLES <span class="ai" title="IA">IA</span></span><span class="dv-note" data-t="r6.note">Falta: KITES</span></div>
+              <div class="dv-row"><span class="dv-doc" data-t="doc.invoice">Factura comercial</span><span class="v">PLUSH TOYS / WOODEN PUZZLES / KITES</span><span class="badge green" data-t="pass">CORRECTO</span></div>
+              <div class="dv-row"><span class="dv-doc" data-t="doc.packing">Lista de empaque</span><span class="v">PLUSH TOYS / WOODEN PUZZLES / KITES</span><span class="badge green" data-t="pass">CORRECTO</span></div>
+            </div>
+          </details>
+
+          <details class="r">
+            <summary><span class="num">R4</span><span class="rt" data-t="r4">Peso bruto</span><span class="sev" data-t="sev.fix">Por corregir</span><span class="badge red" data-t="fail">INCORRECTO</span></summary>
+            <div class="dv">
+              <div class="dv-row bad"><span class="dv-doc" data-t="doc.packing">Lista de empaque</span><span class="v">10,866.000 KGS</span><span class="dv-note" data-t="r4.note">Difiere de 8,655.000 KGS</span></div>
+              <div class="dv-row"><span class="dv-doc" data-t="doc.invoice">Factura comercial</span><span class="v">8,655.000 KGS</span><span class="badge green" data-t="pass">CORRECTO</span></div>
+              <div class="dv-row"><span class="dv-doc" data-t="doc.bl">Conocimiento de embarque</span><span class="v">8,655.000 KGS</span><span class="badge green" data-t="pass">CORRECTO</span></div>
+            </div>
+          </details>
+
+          <details class="r">
+            <summary><span class="num">R1</span><span class="rt" data-t="r1">Nombre y dirección del consignatario</span><span class="sev" data-t="sev.minor">Menor</span><span class="badge red" data-t="fail">INCORRECTO</span></summary>
+            <div class="dv">
+              <div class="dv-row bad"><span class="dv-doc" data-t="doc.invoice">Factura comercial</span><span class="v">ANDES JUGUETES SPA / AV. LAS CONDES 9460 / SANTIAGO, CHILE</span><span class="dv-note" data-t="r1.note">Falta: OF. 1204</span></div>
+              <div class="dv-row bad"><span class="dv-doc" data-t="doc.packing">Lista de empaque</span><span class="v">ANDES JUGUETES SPA / AV. LAS CONDES 9460 / SANTIAGO, CHILE</span><span class="dv-note" data-t="r1.note">Falta: OF. 1204</span></div>
+              <div class="dv-row"><span class="dv-doc" data-t="doc.bl">Conocimiento de embarque</span><span class="v">ANDES JUGUETES SPA / AV. LAS CONDES 9460 / OF. 1204 / SANTIAGO, CHILE</span><span class="badge green" data-t="pass">CORRECTO</span></div>
+            </div>
+          </details>
+
+          <details class="r">
+            <summary><span class="num">R7</span><span class="rt" data-t="r7">Mercancías en el conocimiento de embarque</span><span class="sev"></span><span class="badge gold" data-t="hand">REVISAR A MANO</span></summary>
+            <div class="dv">
+              <div class="dv-row warn"><span class="dv-doc" data-t="doc.bl">Conocimiento de embarque</span><span class="v">PLUSH TOYS / WOODEN PUZZLES</span><span class="dv-note" data-t="r7.note">No nombra: KITES</span></div>
+            </div>
+          </details>
+
+          <details class="r">
+            <summary><span class="num">R9</span><span class="rt" data-t="r9">Puerto de embarque</span><span class="sev"></span><span class="badge red" data-t="nf">NO ENCONTRADO</span></summary>
+            <div class="dv">
+              <div class="dv-row bad"><span class="dv-doc" data-t="doc.bl">Conocimiento de embarque</span><span class="v muted" data-t="r9.none">No se encontró en este documento.</span><span></span></div>
+              <div class="dv-row"><span class="dv-doc" data-t="doc.invoice">Factura comercial</span><span class="v">NINGBO, CHINA</span><span class="badge green" data-t="pass">CORRECTO</span></div>
+            </div>
+          </details>
+
+          <p class="passed"><span class="badge green" data-t="pass">CORRECTO</span><span data-t="g.passed">5 reglas correctas</span></p>
+        </div>
+      </div>
+    </div>
+  </figure>
+</section>
+
+<!-- COST -->
+<section class="sec cost" aria-labelledby="t-cost">
+  <div class="sec-head">
+    <p class="eyebrow">01</p>
+    <h2 id="t-cost" data-t="cost.h">Lo que cuesta un certificado de origen con errores</h2>
+  </div>
+  <div class="cost-body">
+    <div class="rates">
+      <div class="rate"><span class="big">6%</span><span class="rate-l" data-t="cost.without">Arancel general, sin un Formulario F válido</span></div>
+      <div class="rate"><span class="big">0%</span><span class="rate-l" data-t="cost.with">Con el Formulario F del TLC Chile–China, salvo la lista de exclusiones</span></div>
+    </div>
+    <div class="ledger-wrap">
+      <p class="ledger-h" data-t="cost.per">Por cada US$ 10.000 de valor CIF</p>
+      <table class="ledger">
+        <thead><tr><th></th><th data-t="cost.c1">Sin TLC</th><th data-t="cost.c2">Con TLC</th></tr></thead>
+        <tbody>
+          <tr><th data-t="cost.duty">Arancel</th><td data-n="600">US$ 600</td><td data-n="0">US$ 0</td></tr>
+          <tr><th data-t="cost.vat">IVA 19%</th><td data-n="2014">US$ 2.014</td><td data-n="1900">US$ 1.900</td></tr>
+          <tr class="sum"><th data-t="cost.total">Total</th><td data-n="2614">US$ 2.614</td><td data-n="1900">US$ 1.900</td></tr>
+        </tbody>
+      </table>
+      <p class="note" data-t="cost.note">Si la descripción o el código SA del Formulario F no coincide con la factura, la aduana puede negar la preferencia. Despa compara el Formulario F con la factura antes de que el embarque llegue.</p>
+    </div>
   </div>
 </section>
 
-<section class="wrap block" aria-labelledby="t-message">
-  <div class="head-row">
-    <h2 id="t-message" data-t="message.h">Mensaje al proveedor</h2>
-    <div class="seg" role="group" aria-label="Idioma del mensaje">
-      <button type="button" data-msg="zh" aria-pressed="true">中文</button>
-      <button type="button" data-msg="es" aria-pressed="false">Español</button>
-      <button type="button" data-msg="en" aria-pressed="false">English</button>
+<!-- HOW -->
+<section class="sec" id="como" aria-labelledby="t-how">
+  <div class="sec-head">
+    <p class="eyebrow">02</p>
+    <h2 id="t-how" data-t="how.h">Cómo funciona</h2>
+  </div>
+  <ol class="steps">
+    <li><span class="step-n">1</span><h3 data-t="s1.t">Suba los documentos</h3><p data-t="s1.d">Arrastre los archivos de un embarque: PDF, Excel, Word o escaneados. Un embarque puede tener varias facturas y listas de empaque.</p></li>
+    <li><span class="step-n">2</span><h3 data-t="s2.t">Despa los compara</h3><p data-t="s2.d">Cada valor se compara entre documentos, con las reglas de su empresa y con las del TLC Chile–China. Lo que necesita su decisión aparece primero.</p></li>
+    <li><span class="step-n">3</span><h3 data-t="s3.t">Pida la corrección</h3><p data-t="s3.d">Un mensaje por proveedor, en chino, español o inglés, con cada valor que hay que cambiar y los documentos que tiene que volver a enviar.</p></li>
+  </ol>
+</section>
+
+<!-- SOURCE PAGE -->
+<section class="sec" id="pagina" aria-labelledby="t-page">
+  <div class="sec-head">
+    <p class="eyebrow">03</p>
+    <h2 id="t-page" data-t="page.h">Cada valor con su página</h2>
+    <p class="sec-sub" data-t="page.sub">Elija un documento para ver de dónde salió el valor.</p>
+  </div>
+  <div class="source">
+    <div class="source-list" role="tablist" aria-label="R4">
+      <p class="source-rule"><span class="num">R4</span><span data-t="r4">Peso bruto</span></p>
+      <button type="button" role="tab" class="src-row bad" data-doc="pl" aria-selected="true"><span class="dv-doc" data-t="doc.packing">Lista de empaque</span><span class="v">10,866.000 KGS</span><span class="badge red" data-t="fail">INCORRECTO</span></button>
+      <button type="button" role="tab" class="src-row" data-doc="inv" aria-selected="false"><span class="dv-doc" data-t="doc.invoice">Factura comercial</span><span class="v">8,655.000 KGS</span><span class="badge green" data-t="pass">CORRECTO</span></button>
+      <button type="button" role="tab" class="src-row" data-doc="bl" aria-selected="false"><span class="dv-doc" data-t="doc.bl">Conocimiento de embarque</span><span class="v">8,655.000 KGS</span><span class="badge green" data-t="pass">CORRECTO</span></button>
+      <p class="ai-note"><span class="ai">IA</span><span data-t="page.ai">Cuando un valor lo leyó el modelo de IA en un escaneo, queda marcado así para que lo compare con la página.</span></p>
+    </div>
+
+    <div class="viewer">
+      <article class="paper" data-page="pl" lang="en" aria-label="Packing list">
+        <header class="pp-head"><strong>PACKING LIST</strong><span>No. BST-24117</span></header>
+        <p class="pp-k">TO</p>
+        <p class="pp-v">ANDES JUGUETES SPA<br>AV. LAS CONDES 9460<br>SANTIAGO, CHILE</p>
+        <table class="pp-t">
+          <thead><tr><th>DESCRIPTION</th><th>CTNS</th><th>G.W. (KGS)</th></tr></thead>
+          <tbody>
+            <tr><td>PLUSH TOYS</td><td>520</td><td>3,420.000</td></tr>
+            <tr><td>WOODEN PUZZLES</td><td>380</td><td>4,980.000</td></tr>
+            <tr><td>KITES</td><td>340</td><td>2,466.000</td></tr>
+            <tr class="pp-sum"><td>TOTAL</td><td>1,240</td><td><mark class="hit bad">10,866.000</mark></td></tr>
+          </tbody>
+        </table>
+        <p class="pp-foot">PAGE 2 / 2</p>
+      </article>
+      <article class="paper" data-page="inv" lang="en" aria-label="Commercial invoice" hidden>
+        <header class="pp-head"><strong>COMMERCIAL INVOICE</strong><span>No. BST-24117</span></header>
+        <p class="pp-k">TO</p>
+        <p class="pp-v">ANDES JUGUETES SPA<br>AV. LAS CONDES 9460<br>SANTIAGO, CHILE</p>
+        <p class="pp-k">TERMS · PORT OF LOADING</p>
+        <p class="pp-v">FOB · NINGBO, CHINA</p>
+        <table class="pp-t">
+          <thead><tr><th>DESCRIPTION</th><th>CTNS</th><th>AMOUNT (USD)</th></tr></thead>
+          <tbody>
+            <tr><td>PLUSH TOYS</td><td>520</td><td>18,720.00</td></tr>
+            <tr><td>WOODEN PUZZLES</td><td>380</td><td>9,880.00</td></tr>
+            <tr><td>KITES</td><td>340</td><td>4,420.00</td></tr>
+            <tr class="pp-sum"><td>TOTAL</td><td>1,240</td><td>33,020.00</td></tr>
+          </tbody>
+        </table>
+        <p class="pp-line">TOTAL G.W.: <mark class="hit ok">8,655.000 KGS</mark></p>
+        <p class="pp-foot">PAGE 2 / 2</p>
+      </article>
+      <article class="paper" data-page="bl" lang="en" aria-label="Bill of lading" hidden>
+        <header class="pp-head"><strong>BILL OF LADING</strong><span>B/L No. NGBVAP2411</span></header>
+        <p class="pp-k">CONSIGNEE</p>
+        <p class="pp-v">ANDES JUGUETES SPA<br>AV. LAS CONDES 9460<br>OF. 1204<br>SANTIAGO, CHILE</p>
+        <p class="pp-k">PORT OF DISCHARGE</p>
+        <p class="pp-v">SAN ANTONIO, CHILE</p>
+        <table class="pp-t">
+          <thead><tr><th>DESCRIPTION OF GOODS</th><th>PKGS</th><th>GROSS WEIGHT</th></tr></thead>
+          <tbody>
+            <tr><td>PLUSH TOYS / WOODEN PUZZLES</td><td>1,240 CTNS</td><td><mark class="hit ok">8,655.000 KGS</mark></td></tr>
+          </tbody>
+        </table>
+        <p class="pp-foot">PAGE 1 / 1</p>
+      </article>
     </div>
   </div>
-  <article class="paper" lang="zh" id="msg">
-    <p>您好！</p>
-    <p>我们核对了这票货的单据。请修改以下内容。</p>
-    <dl>
-      <dt>商业发票 · 收货人</dt><dd><span class="v">MANZANA 3 GALPON</span> → <span class="v">MANZANA 3 GALPON 4</span></dd>
-      <dt>装箱单 · 收货人</dt><dd><span class="v">MANZANA 3 GALPON</span> → <span class="v">MANZANA 3 GALPON 4</span></dd>
+</section>
+
+<!-- SUPPLIER MESSAGE -->
+<section class="sec" id="mensaje" aria-labelledby="t-msg">
+  <div class="sec-head">
+    <p class="eyebrow">04</p>
+    <h2 id="t-msg" data-t="msg.h">Mensaje al proveedor</h2>
+  </div>
+  <div class="msg-grid">
+    <dl class="msg-facts">
+      <div><dt data-t="m1.t">En el idioma del proveedor</dt><dd data-t="m1.d">Chino, español o inglés. Cada valor va con el documento donde está y el valor correcto.</dd></div>
+      <div><dt data-t="m2.t">Versiones</dt><dd data-t="m2.d">Cuando llega un documento corregido, Despa lo compara con el anterior y cierra lo que quedó resuelto.</dd></div>
+      <div><dt data-t="m3.t">Historial por proveedor</dt><dd data-t="m3.d">Recuerda los errores que repite cada proveedor.</dd></div>
     </dl>
-    <p>请发给我们以下单据：</p>
-    <ul><li>商业发票（修改后）</li><li>装箱单（修改后）</li></ul>
-    <p>谢谢！</p>
-  </article>
-</section>
-
-<section class="wrap block" aria-labelledby="t-what">
-  <h2 id="t-what" data-t="what.h">Qué hace</h2>
-  <dl class="facts">
-    <div><dt data-t="f1.t">Documentos del embarque</dt><dd data-t="f1.d">Factura, lista de empaque, conocimiento de embarque y certificado de origen, en PDF, Excel, Word o escaneados.</dd></div>
-    <div><dt data-t="f2.t">Tus reglas</dt><dd data-t="f2.d">Consignatario, puertos, términos de precio, flete en el BL. Cada importador las define en una pantalla, sin código.</dd></div>
-    <div><dt data-t="f3.t">TLC Chile–China</dt><dd data-t="f3.d">Revisa el Formulario F: emisor, códigos SA contra la factura, validez y criterio de origen.</dd></div>
-    <div><dt data-t="f4.t">Mensaje por proveedor</dt><dd data-t="f4.d">En chino, español o inglés, con los documentos corregidos que tiene que enviar.</dd></div>
-    <div><dt data-t="f5.t">Versiones</dt><dd data-t="f5.d">Cuando llega un documento corregido, lo compara con el anterior y cierra lo que quedó resuelto.</dd></div>
-    <div><dt data-t="f6.t">Historial por proveedor</dt><dd data-t="f6.d">Recuerda los errores que repite cada proveedor.</dd></div>
-    <div><dt data-t="f7.t">Cada valor con su página</dt><dd data-t="f7.d">Un clic lleva a la página del documento de donde salió el valor.</dd></div>
-  </dl>
-</section>
-
-<section class="wrap block" id="lista" aria-labelledby="t-wait">
-  <h2 id="t-wait" data-t="wait.h">Lista de espera</h2>
-  <form class="panel form" id="waitlist" novalidate>
-    <label><span data-t="w.email">Correo</span><input type="email" name="email" required autocomplete="email"></label>
-    <label><span data-t="w.company">Empresa</span><input type="text" name="company" required autocomplete="organization"></label>
-    <label><span data-t="w.role">Rol</span>
-      <select name="role" required>
-        <option value="" data-t="w.role.pick">Elige uno</option>
-        <option value="importer" data-t="w.role.importer">Importador</option>
-        <option value="broker" data-t="w.role.broker">Agente de aduanas</option>
-        <option value="trading" data-t="w.role.trading">Oficina de trading o compras</option>
-        <option value="other" data-t="w.role.other">Otro</option>
-      </select>
-    </label>
-    <label><span data-t="w.country">País</span><input type="text" name="country" required autocomplete="country-name" value="Chile"></label>
-    <div class="form-foot">
-      <button class="btn" type="submit" data-t="w.submit">Unirme</button>
-      <p class="note" id="w-status" role="status" aria-live="polite"></p>
+    <div class="chat">
+      <div class="chat-bar">
+        <div class="seg" role="group" aria-label="Idioma del mensaje">
+          <button type="button" data-msg="zh" aria-pressed="true">中文</button>
+          <button type="button" data-msg="es" aria-pressed="false">Español</button>
+          <button type="button" data-msg="en" aria-pressed="false">English</button>
+        </div>
+        <button type="button" class="btn-ghost" id="copy" data-t="msg.copy">Copiar</button>
+      </div>
+      <div class="bubble" id="msg" lang="zh">
+        <p>您好！</p>
+        <p>我们核对了 BST-24117 这票货的单据。请修改以下内容。</p>
+        <dl>
+          <dt>装箱单 · 毛重</dt><dd><span class="v">10,866.000 KGS</span> → <span class="v">8,655.000 KGS</span></dd>
+          <dt>原产地证 · 货物描述</dt><dd><span class="v">PLUSH TOYS / WOODEN PUZZLES</span> → <span class="v">PLUSH TOYS / WOODEN PUZZLES / KITES</span></dd>
+        </dl>
+        <p>请发给我们以下单据：</p>
+        <ul><li>装箱单（修改后）</li><li>原产地证（修改后）</li></ul>
+        <p>谢谢！</p>
+      </div>
     </div>
-  </form>
-  <div class="panel done" id="w-done" hidden>
-    <span class="badge green" data-t="w.ok">LISTO</span>
-    <p data-t="w.thanks">Te escribimos cuando haya un lugar para tu empresa.</p>
   </div>
 </section>
 
-<section class="wrap block build">
+<!-- RULES -->
+<section class="sec" id="reglas" aria-labelledby="t-rules">
+  <div class="sec-head">
+    <p class="eyebrow">05</p>
+    <h2 id="t-rules" data-t="rules.h">Qué revisa</h2>
+    <p class="sec-sub" data-t="rules.sub">Cada importador define sus reglas en una pantalla, sin código.</p>
+  </div>
+  <table class="rules">
+    <thead><tr><th data-t="rules.c1">Regla</th><th data-t="rules.c2">Qué compara</th></tr></thead>
+    <tbody>
+      <tr><th data-t="ru1.t">Consignatario</th><td data-t="ru1.d">Nombre y dirección, con el texto que exige su empresa, en todos los documentos.</td></tr>
+      <tr><th data-t="ru2.t">Embarcador y parte a notificar</th><td data-t="ru2.d">Que sean los mismos en la factura, la lista de empaque y el conocimiento de embarque.</td></tr>
+      <tr><th data-t="ru3.t">Número de factura</th><td data-t="ru3.d">El mismo número en cada documento que lo cita.</td></tr>
+      <tr><th data-t="ru4.t">Peso bruto</th><td data-t="ru4.d">El total de la lista de empaque contra la factura y el conocimiento de embarque.</td></tr>
+      <tr><th data-t="ru5.t">Mercancías</th><td data-t="ru5.d">La descripción de cada mercancía en todos los documentos, incluido el Formulario F.</td></tr>
+      <tr><th data-t="ru6.t">Puertos y términos</th><td data-t="ru6.d">Puerto de embarque, términos de comercio y flete en el conocimiento de embarque.</td></tr>
+      <tr><th data-t="ru7.t">Monto en palabras</th><td data-t="ru7.d">Que el total escrito en palabras sea el total de la factura.</td></tr>
+      <tr><th data-t="ru8.t">Formulario F</th><td data-t="ru8.d">Emisor, códigos SA contra la factura, validez y criterio de origen del TLC Chile–China.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PRIVACY -->
+<section class="sec privacy" id="privacidad" aria-labelledby="t-priv">
+  <div class="sec-head">
+    <p class="eyebrow">06</p>
+    <h2 id="t-priv" data-t="priv.h">Dónde quedan sus documentos</h2>
+  </div>
+  <div class="priv-body">
+    <div class="mac" aria-hidden="true">
+      <p class="mac-label" data-t="priv.mac">Su Mac</p>
+      <ul>
+        <li><span class="mac-i" data-t="priv.i1">Documentos del embarque</span></li>
+        <li><span class="mac-i" data-t="priv.i2">Modelo de IA local</span></li>
+        <li><span class="mac-i" data-t="priv.i3">Resultados y mensajes</span></li>
+      </ul>
+    </div>
+    <div class="priv-text">
+      <p class="priv-big" data-t="priv.big">Despa funciona en su Mac, con un modelo de IA que corre en el mismo computador. Los documentos no salen de su computador.</p>
+      <p data-t="priv.d">Los escaneos también se leen ahí. Lo que el modelo leyó queda marcado, para que usted decida cuánto revisar a mano.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="sec wait" id="lista" aria-labelledby="t-wait">
+  <div class="wait-text">
+    <p class="eyebrow">07</p>
+    <h2 id="t-wait" data-t="wait.h">Lista de espera</h2>
+    <p data-t="wait.d">Para importadores, agentes de aduanas y oficinas de trading o compras. Le escribimos cuando haya un lugar para su empresa.</p>
+  </div>
+  <div class="wait-form">
+    <form class="form" id="waitlist" novalidate>
+      <label><span data-t="w.email">Correo</span><input type="email" name="email" required autocomplete="email"></label>
+      <label><span data-t="w.company">Empresa</span><input type="text" name="company" required autocomplete="organization"></label>
+      <label><span data-t="w.role">Rol</span>
+        <select name="role" required>
+          <option value="" data-t="w.role.pick">Elija uno</option>
+          <option value="importer" data-t="w.role.importer">Importador</option>
+          <option value="broker" data-t="w.role.broker">Agente de aduanas</option>
+          <option value="trading" data-t="w.role.trading">Oficina de trading o compras</option>
+          <option value="other" data-t="w.role.other">Otro</option>
+        </select>
+      </label>
+      <label><span data-t="w.country">País</span><input type="text" name="country" required autocomplete="country-name" value="Chile"></label>
+      <div class="form-foot">
+        <button class="btn btn-accent" type="submit" data-t="w.submit">Unirme</button>
+        <p class="status" id="w-status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+    <div class="done" id="w-done" hidden>
+      <span class="badge green" data-t="w.ok">LISTO</span>
+      <p data-t="w.thanks">Le escribimos cuando haya un lugar para su empresa.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec build">
   <build-time src="build-time.json" heading="Tiempo de construcción" label-working="Tiempo de trabajo" label-wall="De inicio a fin" label-agent="Tiempo de agentes"></build-time>
 </section>
 
 </main>
 
-<footer class="wrap foot">
+<footer class="foot">
   <span>© 2026 Despa</span>
 </footer>
+
+</div>
 
 <script src="assets/build-time.js"></script>
 <script src="assets/site.js"></script>
