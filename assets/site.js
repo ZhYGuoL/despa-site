@@ -3,60 +3,122 @@
   const FORM = "https://docs.google.com/forms/d/e/1FAIpQLScLl2p1eQtDN6ABq2GCghfBfIN64JWRQ8a6cpSia-Xoj2YOMQ/formResponse";
   const ENTRY = { email: "entry.86999459", company: "entry.927487711", role: "entry.1571711619", country: "entry.49648867", lang: "entry.2002865028" };
 
-  // Spanish lives in the HTML. English is here, keyed by data-t.
-  const EN = {
-    "nav.how": "How it works", "nav.rules": "What it checks", "nav.privacy": "Privacy", "nav.cta": "Waitlist",
-    "hero.eyebrow": "China → Chile imports",
-    "h1": "Import document checks",
-    "lede": "Despa compares the invoice, packing list, bill of lading and certificate of origin of every shipment, with each other and with your rules. Then it writes each supplier what they need to fix.",
-    "lede2": "It runs on your Mac. Your documents never leave your computer.",
-    "cta": "Join the waitlist", "cta2": "See a value on its page",
-    "fig1.cap": "Sample shipment BST-24117, made-up data",
-    "app.profile": "Profile: Andes Juguetes SpA", "app.docs": "Documents", "app.check": "Check",
-    "doc.invoice": "Commercial invoice", "doc.packing": "Packing list", "doc.bl": "Bill of lading", "doc.formf": "Certificate of origin",
-    "p1": "1 page", "p2": "2 pages",
-    "v.blocked": "BLOCKED", "v.counts": "Blocking: 1 · To fix: 2 · Minor: 1 · Check by hand: 2",
-    "g.decide": "Needs your decision", "g.passed": "5 rules passed",
-    "r1": "Consignee name and address", "r4": "Gross weight", "r6": "Description of goods", "r7": "Goods on the bill of lading", "r9": "Port of loading",
-    "sev.block": "Blocking", "sev.fix": "To fix", "sev.minor": "Minor",
-    "fail": "FAIL", "pass": "PASS", "hand": "CHECK BY HAND", "nf": "NOT FOUND",
-    "r6.note": "Missing: KITES", "r4.note": "Differs from 8,655.000 KGS", "r1.note": "Missing: OF. 1204", "r7.note": "Does not name: KITES", "r9.none": "Not found in this document.",
-    "cost.h": "What a certificate of origin with errors costs",
-    "cost.without": "General duty, without a valid Form F",
-    "cost.with": "With the Chile–China FTA Form F, except the exclusion list",
-    "cost.per": "Per US$10,000 of CIF value",
-    "cost.c1": "No FTA", "cost.c2": "With FTA", "cost.duty": "Duty", "cost.vat": "VAT 19%", "cost.total": "Total",
-    "cost.note": "If the description or HS code on the Form F does not match the invoice, customs can deny the preference. Despa compares the Form F with the invoice before the shipment arrives.",
-    "how.h": "How it works",
-    "s1.t": "Add the documents", "s1.d": "Drop in the files of one shipment: PDF, Excel, Word or scans. A shipment can have several invoices and packing lists.",
-    "s2.t": "Despa compares them", "s2.d": "Every value is compared across documents, with your company's rules and with the Chile–China FTA. What needs your decision comes first.",
-    "s3.t": "Ask for the fix", "s3.d": "One message per supplier, in Chinese, Spanish or English, with each value to change and the documents to send again.",
-    "page.h": "Every value has its page", "page.sub": "Pick a document to see where the value came from.",
-    "page.ai": "When the AI model read a value from a scan, it is marked like this so you can compare it with the page.",
-    "msg.h": "Message to the supplier", "msg.copy": "Copy", "msg.copied": "Copied",
-    "m1.t": "In the supplier's language", "m1.d": "Chinese, Spanish or English. Each value comes with the document it is on and the right value.",
-    "m2.t": "Versions", "m2.d": "When a corrected document arrives, Despa compares it with the one before and closes what was fixed.",
-    "m3.t": "Supplier history", "m3.d": "Remembers the errors each supplier repeats.",
-    "rules.h": "What it checks", "rules.sub": "Each importer sets their rules on one screen, with no code.",
-    "rules.c1": "Rule", "rules.c2": "What it compares",
-    "ru1.t": "Consignee", "ru1.d": "Name and address, against the text your company requires, on every document.",
-    "ru2.t": "Shipper and notify party", "ru2.d": "That they match on the invoice, packing list and bill of lading.",
-    "ru3.t": "Invoice number", "ru3.d": "The same number on every document that cites it.",
-    "ru4.t": "Gross weight", "ru4.d": "The packing list total against the invoice and the bill of lading.",
-    "ru5.t": "Goods", "ru5.d": "The description of each item on every document, including the Form F.",
-    "ru6.t": "Ports and terms", "ru6.d": "Port of loading, trade terms, and freight on the bill of lading.",
-    "ru7.t": "Amount in words", "ru7.d": "That the total written in words is the invoice total.",
-    "ru8.t": "Form F", "ru8.d": "Issuer, HS codes against the invoice, validity and origin criterion under the Chile–China FTA.",
-    "priv.h": "Where your documents stay", "priv.mac": "Your Mac",
-    "priv.i1": "Shipment documents", "priv.i2": "Local AI model", "priv.i3": "Results and messages",
-    "priv.big": "Despa runs on your Mac, with an AI model that runs on the same computer. Your documents never leave your computer.",
-    "priv.d": "Scans are read there too. Whatever the model read is marked, so you decide how much to check by hand.",
-    "wait.h": "Waitlist", "wait.d": "For importers, customs brokers and trading or sourcing offices. We will write to you when there is a spot for your company.",
-    "w.email": "Email", "w.company": "Company", "w.role": "Role", "w.role.pick": "Pick one",
-    "w.role.importer": "Importer", "w.role.broker": "Customs broker", "w.role.trading": "Trading or sourcing office", "w.role.other": "Other",
-    "w.country": "Country", "w.submit": "Join", "w.ok": "DONE", "w.thanks": "We will write to you when there is a spot for your company.",
+  // English lives in the HTML (the default). Spanish is here, keyed by data-t.
+  const ES = {
+    "ai": "IA",
+    "nav.how": "Cómo funciona",
+    "nav.rules": "Qué revisa",
+    "nav.privacy": "Privacidad",
+    "nav.cta": "Lista de espera",
+    "hero.eyebrow": "Importaciones China → Chile",
+    "h1": "Revisión de documentos de importación",
+    "lede": "Despa compara la factura, la lista de empaque, el conocimiento de embarque y el certificado de origen de cada embarque, entre sí y con sus reglas. Después escribe a cada proveedor lo que tiene que corregir.",
+    "lede2": "Funciona en su Mac. Los documentos no salen de su computador.",
+    "cta": "Unirme a la lista de espera",
+    "cta2": "Ver un valor en su página",
+    "fig1.cap": "Embarque de ejemplo BST-24117, con datos inventados",
+    "app.profile": "Perfil: Andes Juguetes SpA",
+    "app.docs": "Documentos",
+    "doc.invoice": "Factura comercial",
+    "p2": "2 páginas",
+    "doc.packing": "Lista de empaque",
+    "doc.bl": "Conocimiento de embarque",
+    "p1": "1 página",
+    "doc.formf": "Certificado de origen",
+    "app.check": "Revisar",
+    "v.blocked": "BLOQUEADO",
+    "v.counts": "Bloqueantes: 1 · Por corregir: 2 · Menores: 1 · Por revisar a mano: 2",
+    "g.decide": "Necesita su decisión",
+    "r6": "Descripción de las mercancías",
+    "sev.block": "Bloqueante",
+    "fail": "INCORRECTO",
+    "r6.note": "Falta: KITES",
+    "pass": "CORRECTO",
+    "r4": "Peso bruto",
+    "sev.fix": "Por corregir",
+    "r4.note": "Difiere de 8,655.000 KGS",
+    "r1": "Nombre y dirección del consignatario",
+    "sev.minor": "Menor",
+    "r1.note": "Falta: OF. 1204",
+    "r7": "Mercancías en el conocimiento de embarque",
+    "hand": "REVISAR A MANO",
+    "r7.note": "No nombra: KITES",
+    "r9": "Puerto de embarque",
+    "nf": "NO ENCONTRADO",
+    "r9.none": "No se encontró en este documento.",
+    "g.passed": "5 reglas correctas",
+    "cost.h": "Lo que cuesta un certificado de origen con errores",
+    "cost.without": "Arancel general, sin un Formulario F válido",
+    "cost.with": "Con el Formulario F del TLC Chile–China, salvo la lista de exclusiones",
+    "cost.per": "Por cada US$ 10.000 de valor CIF",
+    "cost.c1": "Sin TLC",
+    "cost.c2": "Con TLC",
+    "cost.duty": "Arancel",
+    "cost.vat": "IVA 19%",
+    "cost.total": "Total",
+    "cost.note": "Si la descripción o el código SA del Formulario F no coincide con la factura, la aduana puede negar la preferencia. Despa compara el Formulario F con la factura antes de que el embarque llegue.",
+    "how.h": "Cómo funciona",
+    "s1.t": "Suba los documentos",
+    "s1.d": "Arrastre los archivos de un embarque: PDF, Excel, Word o escaneados. Un embarque puede tener varias facturas y listas de empaque.",
+    "s2.t": "Despa los compara",
+    "s2.d": "Cada valor se compara entre documentos, con las reglas de su empresa y con las del TLC Chile–China. Lo que necesita su decisión aparece primero.",
+    "s3.t": "Pida la corrección",
+    "s3.d": "Un mensaje por proveedor, en chino, español o inglés, con cada valor que hay que cambiar y los documentos que tiene que volver a enviar.",
+    "page.h": "Cada valor con su página",
+    "page.sub": "Elija un documento para ver de dónde salió el valor.",
+    "page.ai": "Cuando un valor lo leyó el modelo de IA en un escaneo, queda marcado así para que lo compare con la página.",
+    "msg.h": "Mensaje al proveedor",
+    "m1.t": "En el idioma del proveedor",
+    "m1.d": "Chino, español o inglés. Cada valor va con el documento donde está y el valor correcto.",
+    "m2.t": "Versiones",
+    "m2.d": "Cuando llega un documento corregido, Despa lo compara con el anterior y cierra lo que quedó resuelto.",
+    "m3.t": "Historial por proveedor",
+    "m3.d": "Recuerda los errores que repite cada proveedor.",
+    "msg.copy": "Copiar",
+    "rules.h": "Qué revisa",
+    "rules.sub": "Cada importador define sus reglas en una pantalla, sin código.",
+    "rules.c1": "Regla",
+    "rules.c2": "Qué compara",
+    "ru1.t": "Consignatario",
+    "ru1.d": "Nombre y dirección, con el texto que exige su empresa, en todos los documentos.",
+    "ru2.t": "Embarcador y parte a notificar",
+    "ru2.d": "Que sean los mismos en la factura, la lista de empaque y el conocimiento de embarque.",
+    "ru3.t": "Número de factura",
+    "ru3.d": "El mismo número en cada documento que lo cita.",
+    "ru4.t": "Peso bruto",
+    "ru4.d": "El total de la lista de empaque contra la factura y el conocimiento de embarque.",
+    "ru5.t": "Mercancías",
+    "ru5.d": "La descripción de cada mercancía en todos los documentos, incluido el Formulario F.",
+    "ru6.t": "Puertos y términos",
+    "ru6.d": "Puerto de embarque, términos de comercio y flete en el conocimiento de embarque.",
+    "ru7.t": "Monto en palabras",
+    "ru7.d": "Que el total escrito en palabras sea el total de la factura.",
+    "ru8.t": "Formulario F",
+    "ru8.d": "Emisor, códigos SA contra la factura, validez y criterio de origen del TLC Chile–China.",
+    "priv.h": "Dónde quedan sus documentos",
+    "priv.mac": "Su Mac",
+    "priv.i1": "Documentos del embarque",
+    "priv.i2": "Modelo de IA local",
+    "priv.i3": "Resultados y mensajes",
+    "priv.big": "Despa funciona en su Mac, con un modelo de IA que corre en el mismo computador. Los documentos no salen de su computador.",
+    "priv.d": "Los escaneos también se leen ahí. Lo que el modelo leyó queda marcado, para que usted decida cuánto revisar a mano.",
+    "wait.h": "Lista de espera",
+    "wait.d": "Para importadores, agentes de aduanas y oficinas de trading o compras. Le escribimos cuando haya un lugar para su empresa.",
+    "w.email": "Correo",
+    "w.company": "Empresa",
+    "w.role": "Rol",
+    "w.role.pick": "Elija uno",
+    "w.role.importer": "Importador",
+    "w.role.broker": "Agente de aduanas",
+    "w.role.trading": "Oficina de trading o compras",
+    "w.role.other": "Otro",
+    "w.country": "País",
+    "w.submit": "Unirme",
+    "w.ok": "LISTO",
+    "w.thanks": "Le escribimos cuando haya un lugar para su empresa.",
+    "msg.copied": "Copiado"
   };
-  const BT_EN = { src: "build-time.en.json", heading: "Build time", "label-working": "Working time", "label-wall": "Start to finish", "label-agent": "Agent time" };
+  const BT_ES = { src: "build-time.json", heading: "Tiempo de construcción", "label-working": "Tiempo de trabajo", "label-wall": "De inicio a fin", "label-agent": "Tiempo de agentes" };
   const FORM_MSG = {
     es: { missing: "Complete todos los campos.", email: "Revise el correo.", failed: "No se pudo enviar. Intente de nuevo en un minuto." },
     en: { missing: "Fill in every field.", email: "Check the email address.", failed: "It did not go through. Try again in a minute." },
@@ -64,16 +126,16 @@
   // Money in the cost ledger: Chile writes 2.014, English writes 2,014.
   const fmtMoney = (n, l) => "US$ " + n.toLocaleString(l === "en" ? "en-US" : "es-CL");
 
-  const ES = {};
-  document.querySelectorAll("[data-t]").forEach((el) => { if (!(el.dataset.t in ES)) ES[el.dataset.t] = el.textContent; });
-  ES["msg.copied"] = "Copiado";
+  const EN = {};
+  document.querySelectorAll("[data-t]").forEach((el) => { if (!(el.dataset.t in EN)) EN[el.dataset.t] = el.textContent; });
+  EN["msg.copied"] = "Copied";
   const btEl = document.querySelector("build-time");
-  const BT_ES = {};
-  if (btEl) for (const k of Object.keys(BT_EN)) BT_ES[k] = btEl.getAttribute(k);
+  const BT_EN = {};
+  if (btEl) for (const k of Object.keys(BT_ES)) BT_EN[k] = btEl.getAttribute(k);
 
-  const TITLE = { es: document.title, en: "Despa · Import document checks" };
+  const TITLE = { en: document.title, es: "Despa · Revisión de documentos de importación" };
   const status = document.getElementById("w-status");
-  let lang = "es";
+  let lang = "en";
   const t = (k) => (lang === "en" ? EN : ES)[k];
 
   function setLang(next) {
@@ -91,7 +153,7 @@
     }
     try { localStorage.setItem("despa-lang", next); } catch {}
     const u = new URL(location.href);
-    if (next === "en") u.searchParams.set("lang", "en"); else u.searchParams.delete("lang");
+    if (next === "es") u.searchParams.set("lang", "es"); else u.searchParams.delete("lang");
     history.replaceState(null, "", u);
     status.textContent = "";
   }
@@ -171,5 +233,5 @@
   document.querySelectorAll("[data-lang]").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
   let start = new URLSearchParams(location.search).get("lang");
   if (!start) { try { start = localStorage.getItem("despa-lang"); } catch {} }
-  if (start === "en") setLang("en");
+  if (start === "es") setLang("es");
 })();

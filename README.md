@@ -1,6 +1,6 @@
 # Despa site
 
-Static landing page for Despa (Spanish first, English toggle) with a waitlist.
+Static landing page for Despa (English by default, Spanish toggle, `?lang=es` opens it in Spanish) with a waitlist.
 Every shipment value on the page comes from the app's made-up sample set (Andes Juguetes SpA, BST-24117), not from a real customer.
 No build step. Open `index.html` through any static server: `python3 -m http.server 8834`.
 
@@ -8,9 +8,9 @@ No build step. Open `index.html` through any static server: `python3 -m http.ser
 
 | File | What |
 |---|---|
-| `index.html` | The page. Spanish text lives in the HTML; English lives in `assets/site.js` (`EN`). |
+| `index.html` | The page. English text lives in the HTML; Spanish lives in `assets/site.js` (`ES`). |
 | `assets/site.css` | Tokens from Tradecheck's `DESIGN.md` (light and dark), a hairline-ruled 1200px column with numbered plates, and one accent (`--accent`, lime) spent only on the waitlist buttons. |
-| `assets/site.js` | Language toggle (English strings live here), the document viewer in section 03, the supplier-message language switch and copy, the waitlist submit. |
+| `assets/site.js` | Language toggle (Spanish strings live here), the document viewer in section 03, the supplier-message language switch and copy, the waitlist submit. |
 | `assets/despa.mp4`, `assets/poster.jpg` | The launch video (78 s, 21 MB). Not on the page since the Nov 12 rebuild: it shows features that are not built. |
 | `assets/Geist-*.woff2`, `assets/GeistMono-*.ttf` | Geist and Geist Mono (SIL Open Font License 1.1). |
 | `assets/build-time.js` | Copy of the conductor skill's `<build-time>` element, with label attributes added for Spanish. |
