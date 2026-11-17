@@ -216,62 +216,100 @@ shadow.rotation.x = -Math.PI / 2;
 shadow.position.y = -H / 2 - 0.015;
 box.add(shadow);
 
-// ---------- the four documents (made-up sample shipment BST-24117) ----------
-const DOCS = [
-  { title: "COMMERCIAL INVOICE", no: "No. BST-24117", k1: "TO", v1: ["ANDES JUGUETES SPA", "AV. LAS CONDES 9460", "SANTIAGO, CHILE"], k2: "TERMS · PORT OF LOADING", v2: ["FOB · NINGBO, CHINA"], head: ["DESCRIPTION", "CTNS", "AMOUNT"], rows: [["PLUSH TOYS", "520", "18,720.00"], ["WOODEN PUZZLES", "380", "9,880.00"], ["KITES", "340", "4,420.00"]], total: ["TOTAL", "1,240", "33,020.00"] },
-  { title: "PACKING LIST", no: "No. BST-24117", k1: "TO", v1: ["ANDES JUGUETES SPA", "AV. LAS CONDES 9460", "SANTIAGO, CHILE"], k2: "", v2: [], head: ["DESCRIPTION", "CTNS", "G.W. (KGS)"], rows: [["PLUSH TOYS", "520", "3,420.000"], ["WOODEN PUZZLES", "380", "4,980.000"], ["KITES", "340", "2,466.000"]], total: ["TOTAL", "1,240", "10,866.000"], flag: true },
-  { title: "BILL OF LADING", no: "B/L No. NGBVAP2411", k1: "CONSIGNEE", v1: ["ANDES JUGUETES SPA", "AV. LAS CONDES 9460", "OF. 1204", "SANTIAGO, CHILE"], k2: "PORT OF DISCHARGE", v2: ["SAN ANTONIO, CHILE"], head: ["GOODS", "PKGS", "G.W."], rows: [["PLUSH TOYS / WOODEN PUZZLES", "1,240", "8,655.000"]], total: null },
-  { title: "CERTIFICATE OF ORIGIN", no: "FORM F · BST-24117", k1: "EXPORTER", v1: ["NINGBO, CHINA"], k2: "CONSIGNEE", v2: ["ANDES JUGUETES SPA", "SANTIAGO, CHILE"], head: ["DESCRIPTION OF GOODS", "", "H.S."], rows: [["PLUSH TOYS", "", "9503.00"], ["WOODEN PUZZLES", "", "9503.00"]], total: null },
-];
+// ---------- the four documents ----------
+// Drawn as characters, not as legible forms: each one is a single picture and one value you can read
+// at the size it ends up on screen. The HTML labels under the row name them (and translate).
+const INK = "#0f1d2b", GREY = "#858c95", BAR = "#e4e0d6";
 const DOC_W = 1.5, DOC_H = DOC_W * 297 / 210;
-function drawDoc(d) {
-  return (x, w, h) => {
-    x.fillStyle = "#ffffff"; x.fillRect(0, 0, w, h);
-    const m = 44; let y = 76;
-    x.fillStyle = "#1b1b1b";
-    x.font = `700 30px "Times New Roman", Times, serif`;
-    x.fillText(d.title, m, y);
-    x.font = `400 18px "Times New Roman", Times, serif`;
-    x.textAlign = "right"; x.fillText(d.no, w - m, y); x.textAlign = "left";
-    y += 16; x.fillRect(m, y, w - 2 * m, 3);
-    const block = (k, vs) => {
-      if (!k) return;
-      y += 38; x.fillStyle = "#777"; x.font = `400 14px "Times New Roman", Times, serif`; x.fillText(k, m, y);
-      x.fillStyle = "#1b1b1b"; x.font = `400 18px "Times New Roman", Times, serif`;
-      for (const v of vs) { y += 24; x.fillText(v, m, y); }
-    };
-    block(d.k1, d.v1); block(d.k2, d.v2);
-    y += 34;
-    const cols = [m, w - m - 220, w - m];
-    const rowH = 34;
-    const line = () => { x.fillStyle = "#d4d4d4"; x.fillRect(m, y, w - 2 * m, 1.5); };
-    line();
-    x.fillStyle = "#f3f3f3"; x.fillRect(m, y + 1.5, w - 2 * m, rowH - 1.5);
-    x.fillStyle = "#1b1b1b"; x.font = `700 13px "Times New Roman", Times, serif`;
-    const cell = (r) => { x.textAlign = "left"; x.fillText(r[0], cols[0] + 8, y + 23); x.textAlign = "right"; x.fillText(r[1], cols[1] + 60, y + 23); x.fillText(r[2], cols[2] - 8, y + 23); x.textAlign = "left"; };
-    cell(d.head); y += rowH; line();
-    x.font = `400 16px "Times New Roman", Times, serif`;
-    for (const r of d.rows) { x.fillStyle = "#1b1b1b"; cell(r); y += rowH; line(); }
-    if (d.total) {
-      x.font = `700 16px "Times New Roman", Times, serif`; x.fillStyle = "#1b1b1b"; cell(d.total);
-      if (d.flag) {
-        const tw = x.measureText(d.total[2]).width;
-        x.fillStyle = "rgba(217,45,32,0.12)"; x.fillRect(cols[2] - 8 - tw - 8, y + 4, tw + 16, rowH - 8);
-        x.strokeStyle = "#d92d20"; x.lineWidth = 3; x.strokeRect(cols[2] - 8 - tw - 8, y + 4, tw + 16, rowH - 8);
-      }
-      y += rowH; line();
-    }
-    // the rest of the page: grey text lines
-    x.fillStyle = "#e6e6e6";
-    for (let i = 0; i < 7 && y < h - 120; i++) { y += 28; x.fillRect(m, y, (w - 2 * m) * (i % 3 === 2 ? 0.55 : 0.9), 9); }
-    x.fillStyle = "#999"; x.font = `400 13px "Times New Roman", Times, serif`; x.textAlign = "right";
-    x.fillText(d.title === "PACKING LIST" || d.title === "COMMERCIAL INVOICE" ? "PAGE 2 / 2" : "PAGE 1 / 1", w - m, h - 40); x.textAlign = "left";
-  };
+const TW = 1024, TH = 1448;
+const rr = (x, X, Y, w, h, r) => { x.beginPath(); x.roundRect(X, Y, w, h, r); };
+function paperBase(x, ref) {
+  x.fillStyle = "#fffdf8"; x.fillRect(0, 0, TW, TH);
+  x.strokeStyle = "rgba(15,29,43,0.14)"; x.lineWidth = 6; x.strokeRect(3, 3, TW - 6, TH - 6);
+  x.fillStyle = GREY; x.font = `500 46px "Geist Mono", Menlo, monospace`; x.textBaseline = "alphabetic";
+  x.fillText(ref, 80, 128);
+  // the rest of the page, as plain bars
+  x.fillStyle = BAR;
+  [[0.82, 1170], [0.64, 1222], [0.74, 1274], [0.4, 1326]].forEach(([f, y]) => { rr(x, 80, y, (TW - 160) * f, 24, 12); x.fill(); });
 }
+function keyValue(x, text, y, flag) {
+  x.font = `500 ${text.length > 9 ? 104 : 120}px "Geist Mono", Menlo, monospace`;
+  const w = x.measureText(text).width;
+  if (flag) {
+    x.fillStyle = "#fbe7e4"; rr(x, 64, y - 112, w + 48, 148, 18); x.fill();
+    x.strokeStyle = "#d92d20"; x.lineWidth = 10; rr(x, 64, y - 112, w + 48, 148, 18); x.stroke();
+  }
+  x.fillStyle = flag ? "#b4231a" : INK;
+  x.fillText(text, 88, y);
+}
+const DOCS = [
+  { // commercial invoice: line items and a total
+    draw(x) {
+      paperBase(x, "BST-24117");
+      x.fillStyle = INK;
+      for (let i = 0; i < 4; i++) {
+        const y = 250 + i * 110;
+        x.fillStyle = INK; rr(x, 80, y, [430, 360, 300, 0][i] || 0, 34, 17); x.fill();
+        rr(x, TW - 80 - [190, 150, 170, 0][i], y, [190, 150, 170, 0][i], 34, 17); x.fill();
+        x.fillStyle = BAR; x.fillRect(80, y + 70, TW - 160, 5);
+      }
+      x.fillStyle = INK; x.fillRect(80, 640, TW - 160, 12);
+      rr(x, 80, 690, 220, 44, 22); x.fill(); rr(x, TW - 80 - 300, 690, 300, 44, 22); x.fill();
+      keyValue(x, "US$ 33,020", 960, false);
+    },
+  },
+  { // packing list: cartons, and the gross weight that is wrong
+    draw(x) {
+      paperBase(x, "BST-24117");
+      const s = 200, g = 44, x0 = (TW - (3 * s + 2 * g)) / 2;
+      for (let r = 0; r < 2; r++) for (let c = 0; c < 3; c++) {
+        const X = x0 + c * (s + g), Y = 230 + r * (s + g);
+        x.fillStyle = r === 0 && c === 1 ? INK : "#efe9dc"; rr(x, X, Y, s, s, 16); x.fill();
+        x.strokeStyle = INK; x.lineWidth = 10; rr(x, X, Y, s, s, 16); x.stroke();
+        x.fillStyle = r === 0 && c === 1 ? "#fffdf8" : INK; x.fillRect(X + s / 2 - 14, Y, 28, s * 0.42);
+      }
+      keyValue(x, "10,866 KG", 960, true);
+    },
+  },
+  { // bill of lading: the ship, and its B/L number with a barcode
+    draw(x) {
+      paperBase(x, "B/L");
+      x.fillStyle = INK;
+      const cw = 118, ch = 74, bx = 214;
+      const shades = [INK, "#ff5b1f", INK, "#5b6672", "#5b6672", INK, "#ff5b1f", INK];
+      for (let r = 0; r < 2; r++) for (let c = 0; c < 5; c++) {
+        x.fillStyle = shades[(r * 5 + c) % shades.length]; rr(x, bx + c * (cw + 8), 300 + r * (ch + 8), cw, ch, 6); x.fill();
+      }
+      x.fillStyle = INK;
+      x.beginPath(); x.moveTo(120, 470); x.lineTo(TW - 120, 470); x.lineTo(TW - 220, 600); x.lineTo(200, 600); x.closePath(); x.fill();
+      rr(x, TW - 300, 330, 70, 140, 8); x.fill();
+      x.fillStyle = BAR; for (let i = 0; i < 3; i++) { rr(x, 140 + i * 40, 640 + i * 26, TW - 280 - i * 80, 10, 5); x.fill(); }
+      x.font = `500 96px "Geist Mono", Menlo, monospace`; x.fillStyle = INK; x.fillText("NGBVAP2411", 88, 930);
+      for (let i = 0, X = 88; X < TW - 120; i++) { const w = [6, 14, 6, 22, 10, 6, 18][i % 7]; x.fillRect(X, 980, w, 90); X += w + [10, 8, 14, 8][i % 4]; }
+    },
+  },
+  { // certificate of origin (Form F): the stamp
+    draw(x) {
+      paperBase(x, "FORM F");
+      const cx = TW / 2, cy = 460;
+      x.strokeStyle = INK; x.lineWidth = 16; x.beginPath(); x.arc(cx, cy, 230, 0, Math.PI * 2); x.stroke();
+      x.lineWidth = 6; x.beginPath(); x.arc(cx, cy, 186, 0, Math.PI * 2); x.stroke();
+      x.fillStyle = INK; x.textAlign = "center";
+      x.font = `600 128px Geist, Helvetica, Arial, sans-serif`; x.fillText("FTA", cx, cy + 44);
+      x.font = `500 44px "Geist Mono", Menlo, monospace`; x.fillText("CHINA", cx, cy - 92); x.fillText("CHILE", cx, cy + 128);
+      x.textAlign = "left";
+      x.lineWidth = 10; x.lineCap = "round"; x.beginPath(); x.moveTo(300, 820);
+      x.bezierCurveTo(360, 740, 420, 900, 480, 800); x.bezierCurveTo(530, 730, 560, 880, 640, 790); x.bezierCurveTo(680, 750, 700, 820, 740, 800); x.stroke();
+      keyValue(x, "ORIGIN: CN", 1060, false);
+    },
+  },
+];
 const docGeo = new THREE.PlaneGeometry(DOC_W, DOC_H);
+const maxAniso = renderer.capabilities.getMaxAnisotropy();
 const docs = DOCS.map((d) => {
-  const tex = canvasTex(600, 848, drawDoc(d));
-  const m = new THREE.Mesh(docGeo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.85, metalness: 0, side: THREE.DoubleSide }));
+  const tex = canvasTex(TW, TH, (x) => d.draw(x));
+  tex.anisotropy = maxAniso;
+  const m = new THREE.Mesh(docGeo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9, metalness: 0, side: THREE.DoubleSide }));
   m.visible = false;
   scene.add(m);
   return { mesh: m, tex };
@@ -314,6 +352,7 @@ const fitScale = (r, rx, ry) => {
 const toWorld = (cx, cy, z = 0) => new THREE.Vector3(cx - vw / 2, vh / 2 - cy, z);
 
 const state = { p: 0, q: 0, door: 0 };
+const DOC_IN = 0.74;   // document size inside the box: 1.57 m tall, the door opening is 2.0 m
 const qTmp = new THREE.Quaternion(), qDocIn = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
 const v1 = new THREE.Vector3(), v2 = new THREE.Vector3();
 
@@ -355,26 +394,41 @@ function update() {
   leafA.hinge.rotation.y = -door * Math.PI * 0.8;
   leafB.hinge.rotation.y = door * Math.PI * 0.8;
 
-  // documents: out of the doors, up into a row
+  // documents. Two legs so they never cut through the box:
+  // 1) slide straight out along the container's own axis, small enough to clear the door header;
+  // 2) once clear of the doors and in front of the box, rise and turn to face you, ending in the row.
   pose.updateMatrixWorld(true);
   pose.getWorldQuaternion(qTmp);
+  const D = camera.position.z;
+  const front = ((L / 2) * Math.abs(Math.sin(ry)) + (W / 2) * Math.abs(Math.cos(ry))) * Math.cos(rx) + (H / 2) * Math.sin(rx);
+  const zEnd = (front + 0.45) * sc;
+  const qStart = qTmp.clone().multiply(qDocIn);
   let last = 0;
   docs.forEach((d, i) => {
-    const t = smooth(0.34 + i * 0.07, 0.68 + i * 0.07, q);
+    const t = smooth(0.34 + i * 0.07, 0.76 + i * 0.07, q);
     last = t;
-    d.mesh.visible = t > 0.001 && door > 0.3;
+    d.mesh.visible = t > 0.001 && door > 0.6;
     if (!d.mesh.visible) return;
+    const t1 = ease(clamp(t / 0.38)), t2 = ease(clamp((t - 0.38) / 0.62));
+    const zl = (i - 1.5) * 0.16;
+    const xIn = L / 2 - 1.1 - i * 0.2, xOut = L / 2 + 1.6;
     const r = docAs[i].getBoundingClientRect();
-    const end = toWorld(r.left + r.width / 2, r.top + r.height / 2, 60);
-    const start = v1.set(L / 2 - 0.9 - i * 0.12, -0.05, (i - 1.5) * 0.14).applyMatrix4(pose.matrixWorld);
-    const mid = v2.set(L / 2 + 2.6, 0.6, (i - 1.5) * 0.35).applyMatrix4(pose.matrixWorld);
-    const e = ease(t);
-    const a = start.clone().lerp(mid, e), b = mid.clone().lerp(end, e);
-    d.mesh.position.copy(a.lerp(b, e));
-    const qStart = qTmp.clone().multiply(qDocIn);
-    const qEnd = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), (i - 1.5) * -0.025);
-    d.mesh.quaternion.slerpQuaternions(qStart, qEnd, e);
-    d.mesh.scale.setScalar(lerp(sc, r.width / DOC_W, e));
+    const f = (D - zEnd) / D;
+    const end = new THREE.Vector3((r.left + r.width / 2 - vw / 2) * f, (vh / 2 - (r.top + r.height / 2)) * f, zEnd);
+    const endScale = (r.width / DOC_W) * f;
+    const out = v2.set(xOut, -0.1, zl).applyMatrix4(pose.matrixWorld).clone();
+    if (t2 === 0) {
+      d.mesh.position.copy(v1.set(lerp(xIn, xOut, t1), -0.1, zl).applyMatrix4(pose.matrixWorld));
+      d.mesh.quaternion.copy(qStart);
+      d.mesh.scale.setScalar(sc * DOC_IN);
+    } else {
+      const ctrl = new THREE.Vector3(out.x, end.y, Math.max(out.z, zEnd));
+      const a1 = out.clone().lerp(ctrl, t2), b1 = ctrl.clone().lerp(end, t2);
+      d.mesh.position.copy(a1.lerp(b1, t2));
+      const qEnd = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), (i - 1.5) * -0.02);
+      d.mesh.quaternion.slerpQuaternions(qStart, qEnd, t2);
+      d.mesh.scale.setScalar(lerp(sc * DOC_IN, endScale, t2));
+    }
   });
   stage.style.setProperty("--names", smooth(0.85, 1, last).toFixed(3));
   stage.style.setProperty("--head", (1 - smooth(0.2, 0.36, q)).toFixed(3));
@@ -397,6 +451,24 @@ frame();
 // For checks and for making the static poster (assets/container.png).
 window.__despa = {
   state,
+  clip() {
+    update();
+    box.updateMatrixWorld(true);
+    const inv = box.matrixWorld.clone().invert();
+    const hits = [];
+    const p = new THREE.Vector3();
+    docs.forEach((d, i) => {
+      if (!d.mesh.visible) return;
+      d.mesh.updateMatrixWorld(true);
+      for (let u = -1; u <= 1.001; u += 0.125) for (let v = -1; v <= 1.001; v += 0.125) {
+        p.set(u * DOC_W / 2, v * DOC_H / 2, 0).applyMatrix4(d.mesh.matrixWorld).applyMatrix4(inv);
+        const inBox = Math.abs(p.x) < L / 2 && Math.abs(p.y) < H / 2 && Math.abs(p.z) < W / 2;
+        const inCavity = p.x > -L / 2 + 0.12 && p.y > -H / 2 + 0.225 && p.y < H / 2 - 0.29 && Math.abs(p.z) < W / 2 - 0.17;
+        if (inBox && !inCavity) { hits.push({ doc: i, x: +p.x.toFixed(2), y: +p.y.toFixed(2), z: +p.z.toFixed(2) }); return; }
+      }
+    });
+    return hits;
+  },
   renderNow() { update(); renderer.render(scene, camera); return canvas; },
   poster(w = 1600, h = 1000) {
     const keep = [vw, vh];
