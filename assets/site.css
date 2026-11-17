@@ -116,11 +116,19 @@ html[lang="es"] .hero h1 { font-size: clamp(52px, 7vw, 120px); }
 main > .sec:first-of-type { border-top: 0; }
 
 /* 01 cost: giant rates beside a ledger */
-.cost-body { display: grid; grid-template-columns: 7fr 5fr; gap: 64px; align-items: end; }
-.rates { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.cost-body { display: grid; grid-template-columns: 6fr 6fr; gap: 64px; align-items: end; }
+.rates { display: block; }
 .rate { display: flex; flex-direction: column; gap: 18px; padding-top: 20px; border-top: 1px solid var(--ink); }
 .big { font: 200 clamp(110px, 15vw, 240px)/.82 var(--sans); letter-spacing: -0.07em; }
-.rate-l { font-size: 15px; color: var(--ink-2); max-width: 26ch; }
+.rate-k { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0; }
+.state { display: grid; }
+.state > span { grid-area: 1 / 1; display: flex; gap: 12px; align-items: flex-start; font-size: 15px; color: var(--ink-2); max-width: 36ch; }
+.state .badge { flex-shrink: 0; margin-top: 2px; }
+.state-a { opacity: var(--a, 1); }
+.state-b { opacity: var(--b, 0); }
+.rate.flat .big { font-size: clamp(56px, 8vw, 130px); letter-spacing: -0.05em; }
+.rate.flat .state { gap: 12px; }
+.rate.flat .state > span { grid-area: auto; opacity: 1; }
 .ledger-h { font-size: 14px; color: var(--ink-2); margin-bottom: 8px; }
 .ledger { width: 100%; border-collapse: collapse; font-size: 15px; }
 .ledger th, .ledger td { text-align: left; padding: 13px 0; border-bottom: 1px solid var(--line); font-weight: 400; }

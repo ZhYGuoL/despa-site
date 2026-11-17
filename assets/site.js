@@ -61,6 +61,7 @@
     "r9.none": "No se encontró en este documento.",
     "g.passed": "5 reglas correctas",
     "cost.h": "Lo que cuesta un error",
+    "cost.rate": "Arancel de importación",
     "cost.without": "Arancel general, sin un Formulario F válido",
     "cost.with": "Con el Formulario F del TLC Chile–China, salvo la lista de exclusiones",
     "cost.per": "Un contenedor de 20 pies con US$ 50.000 en mercancía (CIF)",
@@ -189,8 +190,7 @@
   const smooth01 = (v) => { v = Math.min(1, Math.max(0, v)); return v * v * (3 - 2 * v); };
   const ledRows = [...costSec.querySelectorAll(".ledger tbody tr")];
   const costItems = [
-    [costSec.querySelectorAll(".rate")[0], 0.04, 0.20],
-    [costSec.querySelectorAll(".rate")[1], 0.20, 0.36],
+    [costSec.querySelector(".rate"), 0.04, 0.14],
     [costSec.querySelector(".ledger-h"), 0.36, 0.44],
     [costSec.querySelector(".ledger thead"), 0.36, 0.44],
     [ledRows[0], 0.44, 0.56], [ledRows[1], 0.56, 0.68], [ledRows[2], 0.68, 0.80], [ledRows[3], 0.80, 0.90],
@@ -211,9 +211,15 @@
         el.querySelectorAll("td[data-n]").forEach((td) => { td.textContent = fmtMoney(s >= 0.999 ? Number(td.dataset.n) : Math.round(Number(td.dataset.n) * s), lang); });
       }
       if (el.classList && el.classList.contains("rate")) {
+        // One rate that loses its free-trade status: 0% with a valid Form F, 6% once the Form F has an error.
         const big = el.querySelector(".big");
-        const n = Number(big.dataset.n);
-        big.textContent = (s >= 0.999 ? n : Math.round(n * s)) + "%";
+        const f = still ? 1 : pin ? smooth01((q - 0.16) / 0.18) : smooth01((vh * 0.62 - el.getBoundingClientRect().top) / (vh * 0.25));
+        el.classList.toggle("flat", still);
+        big.textContent = still ? "0% → 6%" : Math.round(Number(big.dataset.n) * f) + "%";
+        big.style.color = `color-mix(in srgb, var(--red) ${(f * 100).toFixed(0)}%, var(--ink))`;
+        const swap = smooth01((f - 0.35) / 0.3);
+        el.style.setProperty("--a", still ? 1 : (1 - swap).toFixed(3));
+        el.style.setProperty("--b", still ? 1 : swap.toFixed(3));
       }
     }
   }

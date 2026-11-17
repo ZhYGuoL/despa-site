@@ -12,7 +12,7 @@
 <link rel="icon" href="assets/despa-mark.svg" type="image/svg+xml">
 <link rel="preload" href="assets/Geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261117a">
+<link rel="stylesheet" href="assets/site.css?v=20261117c">
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
@@ -110,8 +110,14 @@
   </div>
   <div class="cost-body">
     <div class="rates">
-      <div class="rate"><span class="big" data-n="6">6%</span><span class="rate-l" data-t="cost.without">General duty, without a valid Form F</span></div>
-      <div class="rate"><span class="big" data-n="0">0%</span><span class="rate-l" data-t="cost.with">With the Chile–China FTA Form F, except the exclusion list</span></div>
+      <div class="rate flat">
+        <p class="rate-k" data-t="cost.rate">Import duty rate</p>
+        <span class="big" data-n="6">0% → 6%</span>
+        <div class="state">
+          <span class="state-a"><span class="badge green" data-t="pass">PASS</span><span data-t="cost.with">With the Chile–China FTA Form F, except the exclusion list</span></span>
+          <span class="state-b"><span class="badge red" data-t="fail">FAIL</span><span data-t="cost.without">General duty, without a valid Form F</span></span>
+        </div>
+      </div>
     </div>
     <div class="ledger-wrap">
       <p class="ledger-h" data-t="cost.per">One 20 ft container with US$50,000 of goods (CIF)</p>
@@ -417,8 +423,8 @@
 
 </main>
 
-<script src="assets/build-time.js?v=20261117a"></script>
-<script src="assets/site.js?v=20261117a"></script>
-<script type="module" src="assets/scene.js?v=20261117a"></script>
+<script src="assets/build-time.js?v=20261117c"></script>
+<script src="assets/site.js?v=20261117c"></script>
+<script type="module" src="assets/scene.js?v=20261117c"></script>
 </body>
 </html>
