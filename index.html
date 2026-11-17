@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-3d">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,15 +7,22 @@
 <meta name="description" content="Despa compares the documents of every shipment with each other and with your rules, and writes each supplier what they need to fix.">
 <meta property="og:title" content="Despa · Import document checks">
 <meta property="og:description" content="Despa compares the documents of every shipment with each other and with your rules, and writes each supplier what they need to fix.">
+<meta property="og:image" content="https://despa.zygl.dev/assets/container.png">
+<meta name="theme-color" content="#f5f2ea">
 <link rel="icon" href="assets/despa-mark.svg" type="image/svg+xml">
 <link rel="preload" href="assets/Geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
 </head>
 <body>
 
-<div class="frame">
-
-<header class="top">
+<header class="top" id="top">
   <a class="brand" href="#" aria-label="Despa">
     <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><rect x="14" y="12" width="56.18" height="11.6" rx="2.5"/><rect x="14" y="28.1" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="44.2" width="74" height="11.6" rx="2.5"/><rect x="14" y="60.3" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="76.4" width="56.18" height="11.6" rx="2.5"/></g></svg>
     <span>despa</span>
@@ -30,29 +37,137 @@
       <button type="button" data-lang="en" aria-pressed="true">EN</button>
       <button type="button" data-lang="es" aria-pressed="false">ES</button>
     </div>
-    <a class="btn btn-sm" href="#lista" data-t="nav.cta">Waitlist</a>
+    <a class="btn btn-sm btn-accent" href="#lista" data-t="nav.cta">Waitlist</a>
   </div>
 </header>
 
+<canvas class="scene" id="scene" aria-hidden="true"></canvas>
+
 <main>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-text">
-    <p class="eyebrow" data-t="hero.eyebrow">China → Chile imports</p>
-    <h1 data-t="h1">Import document checks</h1>
+<div class="intro">
+
+  <!-- HERO: stays put while the next section slides over it. The container leaves from here. -->
+  <section class="hero" aria-labelledby="t-hero">
+    <div class="hero-anchor" data-anchor="hero">
+      <img class="poster" src="assets/container.png" alt="" width="1600" height="1000">
+    </div>
+    <p class="eyebrow hero-eyebrow" data-t="hero.eyebrow">China → Chile imports</p>
+    <h1 id="t-hero"><span data-t="h1a">Import</span> <span data-t="h1b">document</span> <span data-t="h1c">checks</span></h1>
+    <div class="hero-foot">
+      <p class="lede" data-t="lede">Despa compares the invoice, packing list, bill of lading and certificate of origin of every shipment, with each other and with your rules. Then it writes each supplier what they need to fix.</p>
+      <div class="ctas">
+        <a class="btn btn-accent" href="#lista" data-t="cta">Join the waitlist</a>
+        <a class="link-arrow" href="#producto" data-t="cta3">See a shipment</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANDING: the container lands on the document band, opens, and its papers come out. -->
+  <section class="land" aria-labelledby="t-land">
+    <div class="stage" data-stage>
+      <div class="land-head">
+        <h2 id="t-land" data-t="land.h">Checked before the shipment arrives</h2>
+        <p class="land-sub" data-t="lede2">It runs on your Mac. Your documents never leave your computer.</p>
+      </div>
+      <div class="docs-row" aria-hidden="true">
+        <div class="doc-anchor" data-anchor="doc0"></div>
+        <div class="doc-anchor" data-anchor="doc1"></div>
+        <div class="doc-anchor" data-anchor="doc2"></div>
+        <div class="doc-anchor" data-anchor="doc3"></div>
+      </div>
+      <ol class="docs-names">
+        <li data-t="doc.invoice">Commercial invoice</li>
+        <li data-t="doc.packing">Packing list</li>
+        <li data-t="doc.bl">Bill of lading</li>
+        <li data-t="doc.formf">Certificate of origin</li>
+      </ol>
+      <div class="marquee" aria-hidden="true">
+        <div class="mq-row" data-dir="-1">
+          <span data-t="mq.importers">Importers</span><i></i><span data-t="mq.brokers">Customs brokers</span><i></i><span data-t="mq.trading">Trading offices</span><i></i><span data-t="mq.sourcing">Sourcing offices</span><i></i>
+          <span data-t="mq.importers">Importers</span><i></i><span data-t="mq.brokers">Customs brokers</span><i></i><span data-t="mq.trading">Trading offices</span><i></i><span data-t="mq.sourcing">Sourcing offices</span><i></i>
+          <span data-t="mq.importers">Importers</span><i></i><span data-t="mq.brokers">Customs brokers</span><i></i><span data-t="mq.trading">Trading offices</span><i></i><span data-t="mq.sourcing">Sourcing offices</span><i></i>
+        </div>
+        <div class="mq-row" data-dir="1">
+          <span>Ningbo</span><i></i><span>Shanghai</span><i></i><span>Shenzhen</span><i></i><span>San Antonio</span><i></i><span>Valparaíso</span><i></i>
+          <span>Ningbo</span><i></i><span>Shanghai</span><i></i><span>Shenzhen</span><i></i><span>San Antonio</span><i></i><span>Valparaíso</span><i></i>
+          <span>Ningbo</span><i></i><span>Shanghai</span><i></i><span>Shenzhen</span><i></i><span>San Antonio</span><i></i><span>Valparaíso</span><i></i>
+        </div>
+      </div>
+      <div class="land-anchor" data-anchor="land"></div>
+      <p class="land-cap"><span data-t="fig1.cap">Sample shipment BST-24117, made-up data</span></p>
+    </div>
+  </section>
+
+</div>
+
+<!-- 01 COST -->
+<section class="sec cost" aria-labelledby="t-cost">
+  <div class="sec-head">
+    <p class="eyebrow">01</p>
+    <h2 id="t-cost" data-t="cost.h">What a certificate of origin with errors costs</h2>
   </div>
-  <div class="hero-side">
-    <p class="lede" data-t="lede">Despa compares the invoice, packing list, bill of lading and certificate of origin of every shipment, with each other and with your rules. Then it writes each supplier what they need to fix.</p>
-    <p class="lede2" data-t="lede2">It runs on your Mac. Your documents never leave your computer.</p>
-    <div class="ctas">
-      <a class="btn btn-accent" href="#lista" data-t="cta">Join the waitlist</a>
-      <a class="link-arrow" href="#pagina" data-t="cta2">See a value on its page</a>
+  <div class="cost-body">
+    <div class="rates">
+      <div class="rate"><span class="big">6%</span><span class="rate-l" data-t="cost.without">General duty, without a valid Form F</span></div>
+      <div class="rate"><span class="big">0%</span><span class="rate-l" data-t="cost.with">With the Chile–China FTA Form F, except the exclusion list</span></div>
+    </div>
+    <div class="ledger-wrap">
+      <p class="ledger-h" data-t="cost.per">Per US$10,000 of CIF value</p>
+      <table class="ledger">
+        <thead><tr><th></th><th data-t="cost.c1">No FTA</th><th data-t="cost.c2">With FTA</th></tr></thead>
+        <tbody>
+          <tr><th data-t="cost.duty">Duty</th><td data-n="600">US$ 600</td><td data-n="0">US$ 0</td></tr>
+          <tr><th data-t="cost.vat">VAT 19%</th><td data-n="2014">US$ 2,014</td><td data-n="1900">US$ 1,900</td></tr>
+          <tr class="sum"><th data-t="cost.total">Total</th><td data-n="2614">US$ 2,614</td><td data-n="1900">US$ 1,900</td></tr>
+        </tbody>
+      </table>
+      <p class="note" data-t="cost.note">If the description or HS code on the Form F does not match the invoice, customs can deny the preference. Despa compares the Form F with the invoice before the shipment arrives.</p>
     </div>
   </div>
+</section>
 
-  <figure class="plate plate-hero" aria-labelledby="fig1-cap">
-    <figcaption class="cap" id="fig1-cap"><span class="cap-n">FIG. 1</span><span data-t="fig1.cap">Sample shipment BST-24117, made-up data</span></figcaption>
+<!-- 02 HOW -->
+<section class="sec how" id="como" aria-labelledby="t-how">
+  <div class="sec-head">
+    <p class="eyebrow">02</p>
+    <h2 id="t-how" data-t="how.h">How it works</h2>
+  </div>
+  <ol class="cards">
+    <li class="card" data-tilt="-1">
+      <div class="card-fig" aria-hidden="true">
+        <span class="chip">invoice_BST-24117.pdf</span>
+        <span class="chip">packing_list_BST-24117.pdf</span>
+        <span class="chip">bl_NGBVAP2411.pdf</span>
+        <span class="chip">form_f_BST-24117.pdf</span>
+      </div>
+      <div class="card-text"><span class="step-n">1</span><h3 data-t="s1.t">Add the documents</h3><p data-t="s1.d">Drop in the files of one shipment: PDF, Excel, Word or scans. A shipment can have several invoices and packing lists.</p></div>
+    </li>
+    <li class="card" data-tilt="1">
+      <div class="card-fig" aria-hidden="true">
+        <span class="mini-row"><span class="num">R4</span><span data-t="r4">Gross weight</span><span class="badge red" data-t="fail">FAIL</span></span>
+        <span class="mini-row"><span class="num">R6</span><span data-t="r6">Description of goods</span><span class="badge red" data-t="fail">FAIL</span></span>
+        <span class="mini-row"><span class="num">R3</span><span data-t="ru3.t">Invoice number</span><span class="badge green" data-t="pass">PASS</span></span>
+      </div>
+      <div class="card-text"><span class="step-n">2</span><h3 data-t="s2.t">Despa compares them</h3><p data-t="s2.d">Every value is compared across documents, with your company's rules and with the Chile–China FTA. What needs your decision comes first.</p></div>
+    </li>
+    <li class="card" data-tilt="-1">
+      <div class="card-fig" aria-hidden="true">
+        <span class="mini-bubble" lang="zh">装箱单 · 毛重<br><span class="v">10,866.000 KGS</span> → <span class="v">8,655.000 KGS</span></span>
+      </div>
+      <div class="card-text"><span class="step-n">3</span><h3 data-t="s3.t">Ask for the fix</h3><p data-t="s3.d">One message per supplier, in Chinese, Spanish or English, with each value to change and the documents to send again.</p></div>
+    </li>
+  </ol>
+</section>
+
+<!-- 03 PRODUCT -->
+<section class="sec product" id="producto" aria-labelledby="t-prod">
+  <div class="sec-head">
+    <p class="eyebrow">03</p>
+    <h2 id="t-prod" data-t="prod.h">Results for one shipment</h2>
+    <p class="sec-sub" data-t="prod.sub">What needs your decision comes first.</p>
+  </div>
+  <figure class="plate" aria-labelledby="fig1-cap">
     <div class="app">
       <div class="app-top">
         <span class="app-brand"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><rect x="14" y="12" width="56.18" height="11.6" rx="2.5"/><rect x="14" y="28.1" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="44.2" width="74" height="11.6" rx="2.5"/><rect x="14" y="60.3" width="70.42" height="11.6" rx="2.5"/><rect x="14" y="76.4" width="56.18" height="11.6" rx="2.5"/></g></svg>despa</span>
@@ -122,52 +237,14 @@
         </div>
       </div>
     </div>
+    <figcaption class="cap" id="fig1-cap"><span data-t="fig1.cap">Sample shipment BST-24117, made-up data</span></figcaption>
   </figure>
 </section>
 
-<!-- COST -->
-<section class="sec cost" aria-labelledby="t-cost">
-  <div class="sec-head">
-    <p class="eyebrow">01</p>
-    <h2 id="t-cost" data-t="cost.h">What a certificate of origin with errors costs</h2>
-  </div>
-  <div class="cost-body">
-    <div class="rates">
-      <div class="rate"><span class="big">6%</span><span class="rate-l" data-t="cost.without">General duty, without a valid Form F</span></div>
-      <div class="rate"><span class="big">0%</span><span class="rate-l" data-t="cost.with">With the Chile–China FTA Form F, except the exclusion list</span></div>
-    </div>
-    <div class="ledger-wrap">
-      <p class="ledger-h" data-t="cost.per">Per US$10,000 of CIF value</p>
-      <table class="ledger">
-        <thead><tr><th></th><th data-t="cost.c1">No FTA</th><th data-t="cost.c2">With FTA</th></tr></thead>
-        <tbody>
-          <tr><th data-t="cost.duty">Duty</th><td data-n="600">US$ 600</td><td data-n="0">US$ 0</td></tr>
-          <tr><th data-t="cost.vat">VAT 19%</th><td data-n="2014">US$ 2,014</td><td data-n="1900">US$ 1,900</td></tr>
-          <tr class="sum"><th data-t="cost.total">Total</th><td data-n="2614">US$ 2,614</td><td data-n="1900">US$ 1,900</td></tr>
-        </tbody>
-      </table>
-      <p class="note" data-t="cost.note">If the description or HS code on the Form F does not match the invoice, customs can deny the preference. Despa compares the Form F with the invoice before the shipment arrives.</p>
-    </div>
-  </div>
-</section>
-
-<!-- HOW -->
-<section class="sec" id="como" aria-labelledby="t-how">
-  <div class="sec-head">
-    <p class="eyebrow">02</p>
-    <h2 id="t-how" data-t="how.h">How it works</h2>
-  </div>
-  <ol class="steps">
-    <li><span class="step-n">1</span><h3 data-t="s1.t">Add the documents</h3><p data-t="s1.d">Drop in the files of one shipment: PDF, Excel, Word or scans. A shipment can have several invoices and packing lists.</p></li>
-    <li><span class="step-n">2</span><h3 data-t="s2.t">Despa compares them</h3><p data-t="s2.d">Every value is compared across documents, with your company's rules and with the Chile–China FTA. What needs your decision comes first.</p></li>
-    <li><span class="step-n">3</span><h3 data-t="s3.t">Ask for the fix</h3><p data-t="s3.d">One message per supplier, in Chinese, Spanish or English, with each value to change and the documents to send again.</p></li>
-  </ol>
-</section>
-
-<!-- SOURCE PAGE -->
+<!-- 04 SOURCE PAGE -->
 <section class="sec" id="pagina" aria-labelledby="t-page">
   <div class="sec-head">
-    <p class="eyebrow">03</p>
+    <p class="eyebrow">04</p>
     <h2 id="t-page" data-t="page.h">Every value has its page</h2>
     <p class="sec-sub" data-t="page.sub">Pick a document to see where the value came from.</p>
   </div>
@@ -232,10 +309,10 @@
   </div>
 </section>
 
-<!-- SUPPLIER MESSAGE -->
+<!-- 05 SUPPLIER MESSAGE -->
 <section class="sec" id="mensaje" aria-labelledby="t-msg">
   <div class="sec-head">
-    <p class="eyebrow">04</p>
+    <p class="eyebrow">05</p>
     <h2 id="t-msg" data-t="msg.h">Message to the supplier</h2>
   </div>
   <div class="msg-grid">
@@ -253,111 +330,91 @@
         </div>
         <button type="button" class="btn-ghost" id="copy" data-t="msg.copy">Copy</button>
       </div>
-      <div class="bubble" id="msg" lang="zh">
-        <p>您好！</p>
-        <p>我们核对了 BST-24117 这票货的单据。请修改以下内容。</p>
-        <dl>
-          <dt>装箱单 · 毛重</dt><dd><span class="v">10,866.000 KGS</span> → <span class="v">8,655.000 KGS</span></dd>
-          <dt>原产地证 · 货物描述</dt><dd><span class="v">PLUSH TOYS / WOODEN PUZZLES</span> → <span class="v">PLUSH TOYS / WOODEN PUZZLES / KITES</span></dd>
-        </dl>
-        <p>请发给我们以下单据：</p>
-        <ul><li>装箱单（修改后）</li><li>原产地证（修改后）</li></ul>
-        <p>谢谢！</p>
-      </div>
+      <div class="bubble" id="msg" lang="zh"></div>
     </div>
   </div>
 </section>
 
-<!-- RULES -->
+<!-- 06 RULES -->
 <section class="sec" id="reglas" aria-labelledby="t-rules">
   <div class="sec-head">
-    <p class="eyebrow">05</p>
+    <p class="eyebrow">06</p>
     <h2 id="t-rules" data-t="rules.h">What it checks</h2>
     <p class="sec-sub" data-t="rules.sub">Each importer sets their rules on one screen, with no code.</p>
   </div>
-  <table class="rules">
-    <thead><tr><th data-t="rules.c1">Rule</th><th data-t="rules.c2">What it compares</th></tr></thead>
-    <tbody>
-      <tr><th data-t="ru1.t">Consignee</th><td data-t="ru1.d">Name and address, against the text your company requires, on every document.</td></tr>
-      <tr><th data-t="ru2.t">Shipper and notify party</th><td data-t="ru2.d">That they match on the invoice, packing list and bill of lading.</td></tr>
-      <tr><th data-t="ru3.t">Invoice number</th><td data-t="ru3.d">The same number on every document that cites it.</td></tr>
-      <tr><th data-t="ru4.t">Gross weight</th><td data-t="ru4.d">The packing list total against the invoice and the bill of lading.</td></tr>
-      <tr><th data-t="ru5.t">Goods</th><td data-t="ru5.d">The description of each item on every document, including the Form F.</td></tr>
-      <tr><th data-t="ru6.t">Ports and terms</th><td data-t="ru6.d">Port of loading, trade terms, and freight on the bill of lading.</td></tr>
-      <tr><th data-t="ru7.t">Amount in words</th><td data-t="ru7.d">That the total written in words is the invoice total.</td></tr>
-      <tr><th data-t="ru8.t">Form F</th><td data-t="ru8.d">Issuer, HS codes against the invoice, validity and origin criterion under the Chile–China FTA.</td></tr>
-    </tbody>
-  </table>
+  <ol class="rules">
+    <li><span class="rn">01</span><h3 data-t="ru1.t">Consignee</h3><p data-t="ru1.d">Name and address, against the text your company requires, on every document.</p></li>
+    <li><span class="rn">02</span><h3 data-t="ru2.t">Shipper and notify party</h3><p data-t="ru2.d">That they match on the invoice, packing list and bill of lading.</p></li>
+    <li><span class="rn">03</span><h3 data-t="ru3.t">Invoice number</h3><p data-t="ru3.d">The same number on every document that cites it.</p></li>
+    <li><span class="rn">04</span><h3 data-t="ru4.t">Gross weight</h3><p data-t="ru4.d">The packing list total against the invoice and the bill of lading.</p></li>
+    <li><span class="rn">05</span><h3 data-t="ru5.t">Goods</h3><p data-t="ru5.d">The description of each item on every document, including the Form F.</p></li>
+    <li><span class="rn">06</span><h3 data-t="ru6.t">Ports and terms</h3><p data-t="ru6.d">Port of loading, trade terms, and freight on the bill of lading.</p></li>
+    <li><span class="rn">07</span><h3 data-t="ru7.t">Amount in words</h3><p data-t="ru7.d">That the total written in words is the invoice total.</p></li>
+    <li><span class="rn">08</span><h3 data-t="ru8.t">Form F</h3><p data-t="ru8.d">Issuer, HS codes against the invoice, validity and origin criterion under the Chile–China FTA.</p></li>
+  </ol>
 </section>
 
-<!-- PRIVACY -->
+<!-- 07 PRIVACY -->
 <section class="sec privacy" id="privacidad" aria-labelledby="t-priv">
-  <div class="sec-head">
-    <p class="eyebrow">06</p>
-    <h2 id="t-priv" data-t="priv.h">Where your documents stay</h2>
-  </div>
-  <div class="priv-body">
-    <div class="mac" aria-hidden="true">
-      <p class="mac-label" data-t="priv.mac">Your Mac</p>
-      <ul>
-        <li><span class="mac-i" data-t="priv.i1">Shipment documents</span></li>
-        <li><span class="mac-i" data-t="priv.i2">Local AI model</span></li>
-        <li><span class="mac-i" data-t="priv.i3">Results and messages</span></li>
-      </ul>
-    </div>
-    <div class="priv-text">
-      <p class="priv-big" data-t="priv.big">Despa runs on your Mac, with an AI model that runs on the same computer. Your documents never leave your computer.</p>
-      <p data-t="priv.d">Scans are read there too. Whatever the model read is marked, so you decide how much to check by hand.</p>
-    </div>
+  <p class="eyebrow">07</p>
+  <h2 id="t-priv" class="statement" data-t="priv.state">Your documents never leave your computer.</h2>
+  <div class="priv-cols">
+    <p data-t="priv.d1">Despa runs on your Mac, with an AI model that runs on the same computer.</p>
+    <p data-t="priv.d">Scans are read there too. Whatever the model read is marked, so you decide how much to check by hand.</p>
   </div>
 </section>
 
-<!-- WAITLIST -->
-<section class="sec wait" id="lista" aria-labelledby="t-wait">
-  <div class="wait-text">
-    <p class="eyebrow">07</p>
-    <h2 id="t-wait" data-t="wait.h">Waitlist</h2>
-    <p data-t="wait.d">For importers, customs brokers and trading or sourcing offices. We will write to you when there is a spot for your company.</p>
-  </div>
-  <div class="wait-form">
-    <form class="form" id="waitlist" novalidate>
-      <label><span data-t="w.email">Email</span><input type="email" name="email" required autocomplete="email"></label>
-      <label><span data-t="w.company">Company</span><input type="text" name="company" required autocomplete="organization"></label>
-      <label><span data-t="w.role">Role</span>
-        <select name="role" required>
-          <option value="" data-t="w.role.pick">Pick one</option>
-          <option value="importer" data-t="w.role.importer">Importer</option>
-          <option value="broker" data-t="w.role.broker">Customs broker</option>
-          <option value="trading" data-t="w.role.trading">Trading or sourcing office</option>
-          <option value="other" data-t="w.role.other">Other</option>
-        </select>
-      </label>
-      <label><span data-t="w.country">Country</span><input type="text" name="country" required autocomplete="country-name" value="Chile"></label>
-      <div class="form-foot">
-        <button class="btn btn-accent" type="submit" data-t="w.submit">Join</button>
-        <p class="status" id="w-status" role="status" aria-live="polite"></p>
+<!-- 08 WAITLIST + FOOTER: the one dark band -->
+<section class="band" id="lista" aria-labelledby="t-wait">
+  <div class="wait">
+    <div class="wait-text">
+      <p class="eyebrow">08</p>
+      <h2 id="t-wait" data-t="wait.h">Waitlist</h2>
+      <p data-t="wait.d">For importers, customs brokers and trading or sourcing offices. We will write to you when there is a spot for your company.</p>
+    </div>
+    <div class="wait-form">
+      <form class="form" id="waitlist" novalidate>
+        <label><span data-t="w.email">Email</span><input type="email" name="email" required autocomplete="email"></label>
+        <label><span data-t="w.company">Company</span><input type="text" name="company" required autocomplete="organization"></label>
+        <label><span data-t="w.role">Role</span>
+          <select name="role" required>
+            <option value="" data-t="w.role.pick">Pick one</option>
+            <option value="importer" data-t="w.role.importer">Importer</option>
+            <option value="broker" data-t="w.role.broker">Customs broker</option>
+            <option value="trading" data-t="w.role.trading">Trading or sourcing office</option>
+            <option value="other" data-t="w.role.other">Other</option>
+          </select>
+        </label>
+        <label><span data-t="w.country">Country</span><input type="text" name="country" required autocomplete="country-name" value="Chile"></label>
+        <div class="form-foot">
+          <button class="btn btn-accent" type="submit" data-t="w.submit">Join</button>
+          <p class="status" id="w-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <div class="done" id="w-done" hidden>
+        <span class="badge green" data-t="w.ok">DONE</span>
+        <p data-t="w.thanks">We will write to you when there is a spot for your company.</p>
       </div>
-    </form>
-    <div class="done" id="w-done" hidden>
-      <span class="badge green" data-t="w.ok">DONE</span>
-      <p data-t="w.thanks">We will write to you when there is a spot for your company.</p>
     </div>
   </div>
-</section>
 
-<section class="sec build">
-  <build-time src="build-time.en.json" heading="Build time" label-working="Working time" label-wall="Start to finish" label-agent="Agent time"></build-time>
+  <div class="build">
+    <build-time src="build-time.en.json" heading="Build time" label-working="Working time" label-wall="Start to finish" label-agent="Agent time"></build-time>
+  </div>
+
+  <footer class="foot">
+    <p class="wordmark" aria-hidden="true">despa</p>
+    <div class="foot-row">
+      <span>© 2026 Despa</span>
+      <a href="#top" data-t="foot.top">Back to top</a>
+    </div>
+  </footer>
 </section>
 
 </main>
 
-<footer class="foot">
-  <span>© 2026 Despa</span>
-</footer>
-
-</div>
-
 <script src="assets/build-time.js"></script>
 <script src="assets/site.js"></script>
+<script type="module" src="assets/scene.js"></script>
 </body>
 </html>

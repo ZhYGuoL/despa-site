@@ -11,7 +11,20 @@
     "nav.privacy": "Privacidad",
     "nav.cta": "Lista de espera",
     "hero.eyebrow": "Importaciones China → Chile",
-    "h1": "Revisión de documentos de importación",
+    "h1a": "Revisión",
+    "h1b": "de documentos",
+    "h1c": "de importación",
+    "cta3": "Ver un embarque",
+    "land.h": "Revisado antes de que llegue el embarque",
+    "mq.importers": "Importadores",
+    "mq.brokers": "Agentes de aduanas",
+    "mq.trading": "Oficinas de trading",
+    "mq.sourcing": "Oficinas de compras",
+    "prod.h": "Resultados de un embarque",
+    "prod.sub": "Lo que necesita su decisión aparece primero.",
+    "priv.state": "Los documentos no salen de su computador.",
+    "priv.d1": "Despa funciona en su Mac, con un modelo de IA que corre en el mismo computador.",
+    "foot.top": "Volver arriba",
     "lede": "Despa compara la factura, la lista de empaque, el conocimiento de embarque y el certificado de origen de cada embarque, entre sí y con sus reglas. Después escribe a cada proveedor lo que tiene que corregir.",
     "lede2": "Funciona en su Mac. Los documentos no salen de su computador.",
     "cta": "Unirme a la lista de espera",
@@ -156,7 +169,36 @@
     if (next === "es") u.searchParams.set("lang", "es"); else u.searchParams.delete("lang");
     history.replaceState(null, "", u);
     status.textContent = "";
+    window.dispatchEvent(new CustomEvent("despa:lang", { detail: next }));
+    requestAnimationFrame(onScroll);
   }
+
+  // Scroll-linked pieces that do not need WebGL: header, the two marquee rows, the cards settling in.
+  const top = document.getElementById("top");
+  const intro = document.querySelector(".intro");
+  const rows = [...document.querySelectorAll(".mq-row")];
+  const cards = [...document.querySelectorAll(".card")];
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  cards.forEach((c) => c.style.setProperty("--tilt", c.dataset.tilt || "1"));
+  let ticking = false;
+  function onScroll() {
+    ticking = false;
+    const y = scrollY, vh = innerHeight;
+    top.classList.toggle("solid", y > intro.offsetHeight - 80);
+    if (!still) {
+      for (const r of rows) {
+        const third = r.scrollWidth / 3;
+        const off = (y * 0.35) % third;
+        r.style.transform = `translate3d(${r.dataset.dir === "1" ? off - third : -off}px,0,0)`;
+      }
+      for (const c of cards) {
+        const t = c.getBoundingClientRect().top / vh;
+        c.style.setProperty("--in", Math.min(1, Math.max(0, (t - 0.5) / 0.5)).toFixed(3));
+      }
+    }
+  }
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  addEventListener("resize", onScroll);
 
   // Every value has its page: picking a document shows that page with the value outlined.
   const tabs = [...document.querySelectorAll(".src-row")];
@@ -193,6 +235,7 @@
     document.querySelectorAll("[data-msg]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.msg === k)));
   }
   document.querySelectorAll("[data-msg]").forEach((b) => b.addEventListener("click", () => setMsg(b.dataset.msg)));
+  setMsg("zh");
   const copyBtn = document.getElementById("copy");
   copyBtn.addEventListener("click", async () => {
     const m = MSG[msgLang];
@@ -234,4 +277,5 @@
   let start = new URLSearchParams(location.search).get("lang");
   if (!start) { try { start = localStorage.getItem("despa-lang"); } catch {} }
   if (start === "es") setLang("es");
+  onScroll();
 })();

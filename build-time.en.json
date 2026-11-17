@@ -1,68 +1,78 @@
 {
  "title": "Despa",
- "start": "2026-11-12T21:46:00-05:00",
- "end": "2026-11-12T21:57:00-05:00",
- "activeMinutes": 11,
- "wallMinutes": 11,
- "agentMinutes": 11,
+ "start": "2026-11-16T22:12:00-05:00",
+ "end": "2026-11-16T22:33:00-05:00",
+ "activeMinutes": 21,
+ "wallMinutes": 21,
+ "agentMinutes": 21,
  "sections": [
   {
-   "name": "Context and design system",
-   "activeMinutes": 3,
+   "name": "Finding the reference site",
+   "activeMinutes": 4,
    "spans": [
     [
      0,
-     3
+     4
     ]
    ]
   },
   {
-   "name": "Copy and fonts",
+   "name": "Studying Yucca and the old page",
    "activeMinutes": 2,
    "spans": [
     [
-     3,
-     5
+     4,
+     6
     ]
    ]
   },
   {
-   "name": "Page and product figure",
+   "name": "Page and copy",
    "activeMinutes": 1.5,
    "spans": [
     [
-     5,
-     6.5
-    ]
-   ]
-  },
-  {
-   "name": "Styles",
-   "activeMinutes": 1.0,
-   "spans": [
-    [
-     6.5,
+     6,
      7.5
     ]
    ]
   },
   {
-   "name": "Languages, message and waitlist",
-   "activeMinutes": 0.5,
+   "name": "Styles",
+   "activeMinutes": 1.5,
    "spans": [
     [
      7.5,
-     8
+     9
     ]
    ]
   },
   {
-   "name": "Preview and fixes",
-   "activeMinutes": 3,
+   "name": "Spanish, marquee and cards",
+   "activeMinutes": 1,
    "spans": [
     [
-     8,
-     11
+     9,
+     10
+    ]
+   ]
+  },
+  {
+   "name": "The container in 3D",
+   "activeMinutes": 2.5,
+   "spans": [
+    [
+     10,
+     12.5
+    ]
+   ]
+  },
+  {
+   "name": "Checks and fixes",
+   "activeMinutes": 8.5,
+   "spans": [
+    [
+     12.5,
+     21
     ]
    ]
   }

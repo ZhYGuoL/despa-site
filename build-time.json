@@ -1,68 +1,78 @@
 {
  "title": "Despa",
- "start": "2026-11-12T21:46:00-05:00",
- "end": "2026-11-12T21:57:00-05:00",
- "activeMinutes": 11,
- "wallMinutes": 11,
- "agentMinutes": 11,
+ "start": "2026-11-16T22:12:00-05:00",
+ "end": "2026-11-16T22:33:00-05:00",
+ "activeMinutes": 21,
+ "wallMinutes": 21,
+ "agentMinutes": 21,
  "sections": [
   {
-   "name": "Contexto y sistema de diseño",
-   "activeMinutes": 3,
+   "name": "Encontrar el sitio de referencia",
+   "activeMinutes": 4,
    "spans": [
     [
      0,
-     3
+     4
     ]
    ]
   },
   {
-   "name": "Textos y fuentes",
+   "name": "Estudiar Yucca y la página anterior",
    "activeMinutes": 2,
    "spans": [
     [
-     3,
-     5
+     4,
+     6
     ]
    ]
   },
   {
-   "name": "Página y figura del producto",
+   "name": "Página y textos",
    "activeMinutes": 1.5,
    "spans": [
     [
-     5,
-     6.5
-    ]
-   ]
-  },
-  {
-   "name": "Estilos",
-   "activeMinutes": 1.0,
-   "spans": [
-    [
-     6.5,
+     6,
      7.5
     ]
    ]
   },
   {
-   "name": "Idiomas, mensaje y lista de espera",
-   "activeMinutes": 0.5,
+   "name": "Estilos",
+   "activeMinutes": 1.5,
    "spans": [
     [
      7.5,
-     8
+     9
     ]
    ]
   },
   {
-   "name": "Revisión en pantalla",
-   "activeMinutes": 3,
+   "name": "Español, marquesina y tarjetas",
+   "activeMinutes": 1,
    "spans": [
     [
-     8,
-     11
+     9,
+     10
+    ]
+   ]
+  },
+  {
+   "name": "El contenedor en 3D",
+   "activeMinutes": 2.5,
+   "spans": [
+    [
+     10,
+     12.5
+    ]
+   ]
+  },
+  {
+   "name": "Revisión y correcciones",
+   "activeMinutes": 8.5,
+   "spans": [
+    [
+     12.5,
+     21
     ]
    ]
   }

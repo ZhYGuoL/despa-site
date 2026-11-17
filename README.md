@@ -9,8 +9,10 @@ No build step. Open `index.html` through any static server: `python3 -m http.ser
 | File | What |
 |---|---|
 | `index.html` | The page. English text lives in the HTML; Spanish lives in `assets/site.js` (`ES`). |
-| `assets/site.css` | Tokens from Tradecheck's `DESIGN.md` (light and dark), a hairline-ruled 1200px column with numbered plates, and one accent (`--accent`, lime) spent only on the waitlist buttons. |
-| `assets/site.js` | Language toggle (Spanish strings live here), the document viewer in section 03, the supplier-message language switch and copy, the waitlist submit. |
+| `assets/site.css` | Page modelled on Yucca Packaging (yucca.co.za, Awwwards Site of the Day, Jan 31 2026): warm paper, one deep ink, huge light Geist, a hero that stays while the page slides over it. One accent (`--accent`, container orange) used only for the container and the primary buttons. Result tones come from Tradecheck's `DESIGN.md`. |
+| `assets/scene.js` | The 20 ft container in three.js (loaded from jsDelivr, pinned to 0.170.0). Scroll drives everything: it leaves the hero, is lowered onto the document band, opens its doors, and the four sample documents come out and line up. Positions come from `[data-anchor]` elements, so the layout lives in CSS. Door code `DSPU 241170` with its ISO 6346 check digit. `prefers-reduced-motion` keeps it in the hero. |
+| `assets/container.png` | Static render of the container, shown if WebGL or the CDN is unavailable, and used as the link preview image. Regenerate with `__despa.poster()` in the browser console. |
+| `assets/site.js` | Language toggle (Spanish strings live here), header, scroll-linked marquee and cards, the document viewer in section 04, the supplier-message language switch and copy, the waitlist submit. |
 | `assets/despa.mp4`, `assets/poster.jpg` | The launch video (78 s, 21 MB). Not on the page since the Nov 12 rebuild: it shows features that are not built. |
 | `assets/Geist-*.woff2`, `assets/GeistMono-*.ttf` | Geist and Geist Mono (SIL Open Font License 1.1). |
 | `assets/build-time.js` | Copy of the conductor skill's `<build-time>` element, with label attributes added for Spanish. |

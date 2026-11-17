@@ -1,22 +1,25 @@
 {
- "Contexto y sistema de diseño / Context and design system": [
-  "DESIGN.md (read)",
-  "skills (read)"
+ "Encontrar el sitio de referencia / Finding the reference site": [
+  "history, X, web search (read)"
  ],
- "Textos y fuentes / Copy and fonts": [
-  "index.html",
-  "assets/Geist-*.woff2"
+ "Estudiar Yucca y la página anterior / Studying Yucca and the old page": [
+  "yucca.co.za (read)",
+  "index.html (read)"
  ],
- "Página y figura del producto / Page and product figure": [
+ "Página y textos / Page and copy": [
   "index.html"
  ],
  "Estilos / Styles": [
   "assets/site.css"
  ],
- "Idiomas, mensaje y lista de espera / Languages, message and waitlist": [
+ "Español, marquesina y tarjetas / Spanish, marquee and cards": [
   "assets/site.js"
  ],
- "Revisión en pantalla / Preview and fixes": [
+ "El contenedor en 3D / The container in 3D": [
+  "assets/scene.js",
+  "assets/container.png"
+ ],
+ "Revisión y correcciones / Checks and fixes": [
   "*"
  ]
 }
