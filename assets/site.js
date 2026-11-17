@@ -185,7 +185,7 @@
   // Section 01 arrives in steps. On a large screen it pins and scroll plays it: 6%, then 0%, then each ledger
   // row counts up, then the note. On small screens each piece comes in as it reaches the screen.
   const costSec = document.querySelector(".cost");
-  const wide = matchMedia("(min-width: 1001px) and (min-height: 700px)");
+  const wide = matchMedia("(min-width: 1001px) and (min-height: 480px)");
   const smooth01 = (v) => { v = Math.min(1, Math.max(0, v)); return v * v * (3 - 2 * v); };
   const ledRows = [...costSec.querySelectorAll(".ledger tbody tr")];
   const costItems = [
@@ -205,7 +205,7 @@
       let s = 1;
       if (still) s = 1;
       else if (pin) s = smooth01((q - a) / (b - a));
-      else s = smooth01((vh * 0.94 - el.getBoundingClientRect().top) / (vh * 0.16));
+      else s = smooth01((vh * 0.88 - el.getBoundingClientRect().top) / (vh * 0.2));
       el.style.setProperty("--s", s.toFixed(3));
       if (el.tagName === "TR") {
         el.querySelectorAll("td[data-n]").forEach((td) => { td.textContent = fmtMoney(s >= 0.999 ? Number(td.dataset.n) : Math.round(Number(td.dataset.n) * s), lang); });

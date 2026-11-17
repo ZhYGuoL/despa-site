@@ -133,8 +133,13 @@ main > .sec:first-of-type { border-top: 0; }
 .rate, .ledger-h, .ledger thead, .ledger tbody tr, .cost .note, .cost .src { opacity: var(--s, 1); transform: translateY(calc((1 - var(--s, 1)) * 18px)); }
 .cost.pin { height: 320vh; padding: 0 var(--gut); }
 .cost.pin .cost-pin { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 72px 0 24px; }
-.cost.pin .sec-head { margin-bottom: 40px; }
-.cost.pin .big { font-size: clamp(110px, 15vw, 24vh); }
+.cost.pin .sec-head { margin-bottom: clamp(14px, 4.5vh, 40px); }
+.cost.pin h2 { font-size: clamp(34px, 9vh, 84px); }
+.cost.pin .cost-pin { padding-top: clamp(64px, 9vh, 72px); }
+.cost.pin .ledger th, .cost.pin .ledger td { padding-block: clamp(5px, 1.5vh, 13px); }
+.cost.pin .note { margin-top: clamp(8px, 2vh, 20px); }
+.cost.pin .rate { gap: clamp(8px, 2vh, 18px); }
+.cost.pin .big { font-size: clamp(72px, min(15vw, 24vh), 240px); }
 .note { margin-top: 20px; font-size: 14px; color: var(--ink-2); }
 .src { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
 
