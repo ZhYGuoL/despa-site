@@ -60,7 +60,7 @@
     "nf": "NO ENCONTRADO",
     "r9.none": "No se encontró en este documento.",
     "g.passed": "5 reglas correctas",
-    "cost.h": "Lo que cuesta un certificado de origen con errores",
+    "cost.h": "Lo que cuesta un error",
     "cost.without": "Arancel general, sin un Formulario F válido",
     "cost.with": "Con el Formulario F del TLC Chile–China, salvo la lista de exclusiones",
     "cost.per": "Un contenedor de 20 pies con US$ 50.000 en mercancía (CIF)",
