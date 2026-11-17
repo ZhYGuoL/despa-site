@@ -129,6 +129,12 @@ main > .sec:first-of-type { border-top: 0; }
 .ledger thead th:not(:first-child) { text-align: right; }
 .ledger .sum th, .ledger .sum td { font-weight: 500; border-bottom: 0; }
 .ledger .gap th, .ledger .gap td { border-bottom: 0; padding-top: 4px; font-weight: 500; color: var(--red); }
+/* section 01 is played by scroll (see costTick in site.js); --s is each piece's progress, 1 when there is no script */
+.rate, .ledger-h, .ledger thead, .ledger tbody tr, .cost .note, .cost .src { opacity: var(--s, 1); transform: translateY(calc((1 - var(--s, 1)) * 18px)); }
+.cost.pin { height: 320vh; padding: 0 var(--gut); }
+.cost.pin .cost-pin { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 72px 0 24px; }
+.cost.pin .sec-head { margin-bottom: 40px; }
+.cost.pin .big { font-size: clamp(110px, 15vw, 24vh); }
 .note { margin-top: 20px; font-size: 14px; color: var(--ink-2); }
 .src { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
 

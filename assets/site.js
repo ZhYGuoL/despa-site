@@ -182,9 +182,45 @@
   const cards = [...document.querySelectorAll(".card")];
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   cards.forEach((c) => c.style.setProperty("--tilt", c.dataset.tilt || "1"));
+  // Section 01 arrives in steps. On a large screen it pins and scroll plays it: 6%, then 0%, then each ledger
+  // row counts up, then the note. On small screens each piece comes in as it reaches the screen.
+  const costSec = document.querySelector(".cost");
+  const wide = matchMedia("(min-width: 1001px) and (min-height: 700px)");
+  const smooth01 = (v) => { v = Math.min(1, Math.max(0, v)); return v * v * (3 - 2 * v); };
+  const ledRows = [...costSec.querySelectorAll(".ledger tbody tr")];
+  const costItems = [
+    [costSec.querySelectorAll(".rate")[0], 0.04, 0.20],
+    [costSec.querySelectorAll(".rate")[1], 0.20, 0.36],
+    [costSec.querySelector(".ledger-h"), 0.36, 0.44],
+    [costSec.querySelector(".ledger thead"), 0.36, 0.44],
+    [ledRows[0], 0.44, 0.56], [ledRows[1], 0.56, 0.68], [ledRows[2], 0.68, 0.80], [ledRows[3], 0.80, 0.90],
+    [costSec.querySelector(".note"), 0.90, 0.97], [costSec.querySelector(".src"), 0.93, 1],
+  ];
+  function costTick(y, vh) {
+    const pin = wide.matches && !still;
+    costSec.classList.toggle("pin", pin);
+    const top = costSec.getBoundingClientRect().top + y;
+    const q = pin ? Math.min(1, Math.max(0, (y - top) / Math.max(1, costSec.offsetHeight - vh))) : 0;
+    for (const [el, a, b] of costItems) {
+      let s = 1;
+      if (still) s = 1;
+      else if (pin) s = smooth01((q - a) / (b - a));
+      else s = smooth01((vh * 0.94 - el.getBoundingClientRect().top) / (vh * 0.16));
+      el.style.setProperty("--s", s.toFixed(3));
+      if (el.tagName === "TR") {
+        el.querySelectorAll("td[data-n]").forEach((td) => { td.textContent = fmtMoney(s >= 0.999 ? Number(td.dataset.n) : Math.round(Number(td.dataset.n) * s), lang); });
+      }
+      if (el.classList && el.classList.contains("rate")) {
+        const big = el.querySelector(".big");
+        const n = Number(big.dataset.n);
+        big.textContent = (s >= 0.999 ? n : Math.round(n * s)) + "%";
+      }
+    }
+  }
   let ticking = false;
   function onScroll() {
     ticking = false;
+    costTick(scrollY, innerHeight);
     const y = scrollY, vh = innerHeight;
     top.classList.toggle("solid", y > intro.offsetHeight - 80);
     if (!still) {
