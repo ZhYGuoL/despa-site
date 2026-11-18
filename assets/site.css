@@ -115,41 +115,18 @@ html[lang="es"] .hero h1 { font-size: clamp(52px, 7vw, 120px); }
 .sec-sub { margin-top: 20px; color: var(--ink-2); font-size: 18px; max-width: 48ch; }
 main > .sec:first-of-type { border-top: 0; }
 
-/* 01 cost: giant rates beside a ledger */
-.cost-body { display: grid; grid-template-columns: 6fr 6fr; gap: 64px; align-items: end; }
-.rates { display: block; }
-.rate { display: flex; flex-direction: column; gap: 18px; padding-top: 20px; border-top: 1px solid var(--ink); }
-.big { font: 200 clamp(110px, 15vw, 240px)/.82 var(--sans); letter-spacing: -0.07em; }
-.rate-k { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0; }
-.state { display: grid; }
-.state > span { grid-area: 1 / 1; display: flex; gap: 12px; align-items: flex-start; font-size: 15px; color: var(--ink-2); max-width: 36ch; }
-.state .badge { flex-shrink: 0; margin-top: 2px; }
-.state-a { opacity: var(--a, 1); }
-.state-b { opacity: var(--b, 0); }
-.rate.flat .big { font-size: clamp(56px, 8vw, 130px); letter-spacing: -0.05em; }
-.rate.flat .state { gap: 12px; }
-.rate.flat .state > span { grid-area: auto; opacity: 1; }
-.ledger-h { font-size: 14px; color: var(--ink-2); margin-bottom: 8px; }
-.ledger { width: 100%; border-collapse: collapse; font-size: 15px; }
-.ledger th, .ledger td { text-align: left; padding: 13px 0; border-bottom: 1px solid var(--line); font-weight: 400; }
-.ledger thead th { font-size: 13px; color: var(--ink-3); font-weight: 500; }
-.ledger td { font-family: var(--mono); font-size: 14px; text-align: right; }
-.ledger thead th:not(:first-child) { text-align: right; }
-.ledger .sum th, .ledger .sum td { font-weight: 500; border-bottom: 0; }
-.ledger .gap th, .ledger .gap td { border-bottom: 0; padding-top: 4px; font-weight: 500; color: var(--red); }
-/* section 01 is played by scroll (see costTick in site.js); --s is each piece's progress, 1 when there is no script */
-.rate, .ledger-h, .ledger thead, .ledger tbody tr, .cost .note, .cost .src { opacity: var(--s, 1); transform: translateY(calc((1 - var(--s, 1)) * 18px)); }
-.cost.pin { height: 320vh; padding: 0 var(--gut); }
-.cost.pin .cost-pin { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 72px 0 24px; }
-.cost.pin .sec-head { margin-bottom: clamp(14px, 4.5vh, 40px); }
+/* 01 cost: one picture (drawn in site.js, drawCost) and one number that counts what lands */
+.cost-body { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 48px; align-items: center; }
+.cost-cv { display: block; width: 100%; max-width: calc((100vh - 300px) * 2.0667); min-width: 260px; aspect-ratio: 31 / 15; height: auto; }
+.cost-num { opacity: var(--n, 1); }
+.rate-k { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 14px; }
+.big.money { display: block; font: 200 clamp(44px, 4.4vw, 72px)/1 var(--sans); letter-spacing: -0.05em; color: var(--red); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.src { margin-top: 18px; font-size: 12px; color: var(--ink-3); max-width: 30ch; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.cost.pin { height: 300vh; padding: 0 var(--gut); }
+.cost.pin .cost-pin { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: clamp(64px, 9vh, 72px) 0 24px; }
+.cost.pin .sec-head { margin-bottom: clamp(14px, 4vh, 40px); }
 .cost.pin h2 { font-size: clamp(34px, 9vh, 84px); }
-.cost.pin .cost-pin { padding-top: clamp(64px, 9vh, 72px); }
-.cost.pin .ledger th, .cost.pin .ledger td { padding-block: clamp(5px, 1.5vh, 13px); }
-.cost.pin .note { margin-top: clamp(8px, 2vh, 20px); }
-.cost.pin .rate { gap: clamp(8px, 2vh, 18px); }
-.cost.pin .big { font-size: clamp(72px, min(15vw, 24vh), 240px); }
-.note { margin-top: 20px; font-size: 14px; color: var(--ink-2); }
-.src { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
 
 /* 02 how: three tall cards that settle as they come in */
 .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -308,6 +285,8 @@ mark.hit.ok { outline-color: #0e8f5e; background: #e9f7f0; }
   .docs-names { font-size: 10.5px; }
   .land-anchor { width: 92vw; height: 44vh; bottom: 4vh; }
   .cost-body, .msg-grid, .wait { grid-template-columns: 1fr; }
+  .cost-cv { max-width: none; }
+  .cost-num { margin-top: 8px; }
   .cards { grid-template-columns: 1fr; }
   .card { min-height: 0; }
   .source { grid-template-columns: 1fr; }
@@ -348,8 +327,6 @@ mark.hit.ok { outline-color: #0e8f5e; background: #e9f7f0; }
   .dv { padding-left: 0; }
   .dv-row { grid-template-columns: 1fr auto; }
   .dv-row .v { grid-column: 1 / -1; grid-row: 2; }
-  .rates { gap: 16px; }
-  .big { font-size: 28vw; }
   .viewer { padding: 14px; min-height: 0; }
   .paper { padding: 18px 16px 12px; font-size: 10.5px; }
   .source-list { padding: 18px; }

@@ -66,7 +66,10 @@
     "cost.with": "Con el Formulario F del TLC Chile–China, salvo la lista de exclusiones",
     "cost.per": "Un contenedor de 20 pies con US$ 50.000 en mercancía (CIF)",
     "cost.gap": "Pagado de más",
-    "cost.src": "US$ 50.000 es el promedio mundial redondeado hacia abajo: cerca de US$ 54.500 en mercancía por contenedor de 20 pies (UNCTAD, datos de 2020).",
+    "cost.src": "Un contenedor de 20 pies, US$ 50.000 en mercancía (promedio UNCTAD, redondeado hacia abajo).",
+    "cost.sr": "Sin un Formulario F válido, un contenedor de 20 pies con US$ 50.000 en mercancía paga US$ 3.570 más: US$ 3.000 de arancel y US$ 570 de IVA.",
+    "cost.stamp.ok": "0% arancel",
+    "cost.stamp.bad": "Error",
     "cost.c1": "Sin TLC",
     "cost.c2": "Con TLC",
     "cost.duty": "Arancel",
@@ -183,46 +186,138 @@
   const cards = [...document.querySelectorAll(".card")];
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   cards.forEach((c) => c.style.setProperty("--tilt", c.dataset.tilt || "1"));
-  // Section 01 arrives in steps. On a large screen it pins and scroll plays it: 6%, then 0%, then each ledger
-  // row counts up, then the note. On small screens each piece comes in as it reaches the screen.
+  // Section 01 is one picture. 50 tiles of US$1,000 are a container's goods. A Form F stamp lands on it, turns red,
+  // and red blocks fall beside it: three of US$1,000 (duty) and a thin one of US$570 (VAT). Scroll is the clock.
   const costSec = document.querySelector(".cost");
+  const cv = document.getElementById("cost-cv");
+  const cx = cv.getContext("2d");
+  const moneyEl = costSec.querySelector(".money");
+  const numWrap = costSec.querySelector(".cost-num");
   const wide = matchMedia("(min-width: 1001px) and (min-height: 480px)");
-  const smooth01 = (v) => { v = Math.min(1, Math.max(0, v)); return v * v * (3 - 2 * v); };
-  const ledRows = [...costSec.querySelectorAll(".ledger tbody tr")];
-  const costItems = [
-    [costSec.querySelector(".rate"), 0.04, 0.14],
-    [costSec.querySelector(".ledger-h"), 0.36, 0.44],
-    [costSec.querySelector(".ledger thead"), 0.36, 0.44],
-    [ledRows[0], 0.44, 0.56], [ledRows[1], 0.56, 0.68], [ledRows[2], 0.68, 0.80], [ledRows[3], 0.80, 0.90],
-    [costSec.querySelector(".note"), 0.90, 0.97], [costSec.querySelector(".src"), 0.93, 1],
-  ];
+  const c01 = (v) => Math.min(1, Math.max(0, v));
+  const sm = (v) => { v = c01(v); return v * v * (3 - 2 * v); };
+  const seg = (q, a, b) => c01((q - a) / (b - a));
+  const rootCs = getComputedStyle(document.documentElement);
+  const cssv = (n) => rootCs.getPropertyValue(n).trim();
+  const lab = (k) => costSec.querySelector(`[data-t="${k}"]`).textContent;
+  const FALLS = [[0.44, 0.11, 1000], [0.55, 0.11, 1000], [0.66, 0.11, 1000], [0.80, 0.10, 570]];
+  const MONO = '"Geist Mono", ui-monospace, Menlo, monospace';
+
+  function drawCost(q) {
+    const r = cv.getBoundingClientRect();
+    if (!r.width) return;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const pw = Math.round(r.width * dpr), ph = Math.round(r.height * dpr);
+    if (cv.width !== pw || cv.height !== ph) { cv.width = pw; cv.height = ph; }
+    const u = r.width / 15.5, H = r.height, ground = H - 0.4 * u;
+    const ink = cssv("--ink"), red = cssv("--red"), green = cssv("--green"), line = cssv("--line"), accent = cssv("--accent");
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx.clearRect(0, 0, r.width, H);
+
+    // every fall: position 0..1 with gravity, then a bounce; and a shake when it lands
+    let shake = 0, money = 0;
+    const falls = FALLS.map(([a, d, val]) => {
+      const s = seg(q, a, a + d);
+      const f = s < 0.7 ? (s / 0.7) ** 2 : 1;
+      const b = s < 0.7 ? 0 : (s - 0.7) / 0.3;
+      const up = s < 0.7 ? 0 : Math.sin(b * Math.PI) * (1 - b) * 0.35 * u;
+      if (s >= 0.7 && s < 1) shake += Math.sin(b * Math.PI * 7) * (1 - b) * 0.07 * u;
+      money += val * Math.min(1, s / 0.7);
+      return { s, f, up, val };
+    });
+    cx.save();
+    cx.translate(0, shake);
+
+    // ground
+    cx.fillStyle = line; cx.fillRect(0, ground + 0.12 * u, r.width, 2);
+
+    // the container's goods: frame, 50 tiles, value
+    const dim = 1 - 0.42 * sm(seg(q, 0.40, 0.50));
+    const gridA = sm(seg(q, 0.02, 0.10));
+    cx.globalAlpha = gridA;
+    cx.strokeStyle = accent; cx.lineWidth = Math.max(2, 0.07 * u);
+    cx.beginPath(); cx.roundRect(0.1 * u, ground - 5 * u - 0.1 * u, 10.2 * u, 5.2 * u, 0.12 * u); cx.stroke();
+    cx.globalAlpha = 1;
+    cx.fillStyle = ink;
+    for (let i = 0; i < 50; i++) {
+      const a = sm(seg(q, 0.02 + i * 0.0034, 0.07 + i * 0.0034));
+      if (a <= 0) continue;
+      const col = i % 10, row = Math.floor(i / 10);
+      const sz = 0.92 * u * (0.5 + 0.5 * a);
+      const cxp = 0.2 * u + col * u + 0.5 * u, cyp = ground - row * u - 0.5 * u;
+      cx.globalAlpha = a * dim;
+      cx.fillRect(cxp - sz / 2, cyp - sz / 2, sz, sz);
+    }
+    cx.globalAlpha = gridA * dim;
+    cx.font = `500 ${Math.max(11, 0.5 * u)}px ${MONO}`; cx.textAlign = "right"; cx.textBaseline = "alphabetic";
+    cx.fillText(fmtMoney(50000, lang), 10.3 * u, 1.45 * u);
+
+    // the Form F stamp: lands green, flips, turns red
+    const ap = sm(seg(q, 0.16, 0.24)), fl = seg(q, 0.34, 0.42);
+    if (ap > 0) {
+      const bad = fl >= 0.5;
+      const sx = fl > 0 && fl < 1 ? Math.abs(Math.cos(fl * Math.PI)) : 1;
+      const wob = Math.sin(seg(q, 0.42, 0.52) * Math.PI * 5) * (1 - seg(q, 0.42, 0.52)) * 0.07;
+      const col = bad ? red : green;
+      cx.save();
+      cx.globalAlpha = ap;
+      cx.translate(0.2 * u + 2.4 * u, 0.3 * u + 0.75 * u);
+      cx.rotate(-0.06 + wob);
+      const k = 1 + (1 - ap) * 0.5;
+      cx.scale(Math.max(0.02, sx) * k, k);
+      cx.fillStyle = col; cx.globalAlpha = ap * 0.1; cx.beginPath(); cx.roundRect(-2.3 * u, -0.75 * u, 4.6 * u, 1.5 * u, 0.14 * u); cx.fill();
+      cx.globalAlpha = ap; cx.strokeStyle = col; cx.lineWidth = Math.max(2, 0.09 * u); cx.stroke();
+      cx.fillStyle = col; cx.textAlign = "center";
+      cx.font = `600 ${0.5 * u}px ${MONO}`; cx.fillText("FORM F", 0, -0.04 * u);
+      cx.font = `500 ${0.34 * u}px ${MONO}`; cx.fillText(lab(bad ? "cost.stamp.bad" : "cost.stamp.ok").toUpperCase(), 0, 0.46 * u);
+      cx.restore();
+    }
+    cx.globalAlpha = 1;
+
+    // the stack: three US$1,000 blocks of duty, then the US$570 of VAT
+    const sx0 = 11.7 * u;
+    falls.forEach((f, k) => {
+      if (f.s <= 0) return;
+      const slab = k === 3, th = slab ? 0.57 * u : 0.92 * u;
+      const top = slab ? ground - 3 * u - 0.57 * u : ground - (k + 1) * u + 0.04 * u;
+      const y0 = -(th + 0.6 * u);
+      cx.fillStyle = red;
+      cx.fillRect(sx0, y0 + (top - y0) * f.f - f.up, 0.92 * u, th);
+    });
+
+    // names, at the end
+    const la = sm(seg(q, 0.88, 0.95));
+    if (la > 0) {
+      cx.globalAlpha = la; cx.textAlign = "left";
+      const fn = Math.max(9, 0.27 * u), fv = Math.max(10, 0.32 * u);
+      [[ground - 1.5 * u, "cost.duty", 3000], [ground - 3.285 * u, "cost.vat", 570]].forEach(([yc, key, val]) => {
+        cx.fillStyle = line; cx.fillRect(sx0 + 1.05 * u, yc, 0.3 * u, 2);
+        cx.fillStyle = cssv("--ink-2"); cx.font = `500 ${fn}px ${MONO}`; cx.fillText(lab(key).toUpperCase(), sx0 + 1.5 * u, yc - 0.08 * u);
+        cx.fillStyle = red; cx.font = `500 ${fv}px ${MONO}`; cx.fillText(fmtMoney(val, lang), sx0 + 1.5 * u, yc + 0.32 * u);
+      });
+    }
+    cx.restore();
+
+    moneyEl.textContent = fmtMoney(Math.round(money), lang);
+    numWrap.style.setProperty("--n", sm(seg(q, 0.42, 0.5)).toFixed(3));
+    return money;
+  }
+
   function costTick(y, vh) {
     const pin = wide.matches && !still;
     costSec.classList.toggle("pin", pin);
-    const top = costSec.getBoundingClientRect().top + y;
-    const q = pin ? Math.min(1, Math.max(0, (y - top) / Math.max(1, costSec.offsetHeight - vh))) : 0;
-    for (const [el, a, b] of costItems) {
-      let s = 1;
-      if (still) s = 1;
-      else if (pin) s = smooth01((q - a) / (b - a));
-      else s = smooth01((vh * 0.88 - el.getBoundingClientRect().top) / (vh * 0.2));
-      el.style.setProperty("--s", s.toFixed(3));
-      if (el.tagName === "TR") {
-        el.querySelectorAll("td[data-n]").forEach((td) => { td.textContent = fmtMoney(s >= 0.999 ? Number(td.dataset.n) : Math.round(Number(td.dataset.n) * s), lang); });
-      }
-      if (el.classList && el.classList.contains("rate")) {
-        // One rate that loses its free-trade status: 0% with a valid Form F, 6% once the Form F has an error.
-        const big = el.querySelector(".big");
-        const f = still ? 1 : pin ? smooth01((q - 0.16) / 0.18) : smooth01((vh * 0.62 - el.getBoundingClientRect().top) / (vh * 0.25));
-        el.classList.toggle("flat", still);
-        big.textContent = still ? "0% → 6%" : Math.round(Number(big.dataset.n) * f) + "%";
-        big.style.color = `color-mix(in srgb, var(--red) ${(f * 100).toFixed(0)}%, var(--ink))`;
-        const swap = smooth01((f - 0.35) / 0.3);
-        el.style.setProperty("--a", still ? 1 : (1 - swap).toFixed(3));
-        el.style.setProperty("--b", still ? 1 : swap.toFixed(3));
+    let q = 1;
+    if (!still) {
+      if (pin) {
+        const top = costSec.getBoundingClientRect().top + y;
+        q = c01((y - top) / Math.max(1, costSec.offsetHeight - vh));
+      } else {
+        q = c01((vh * 0.9 - cv.getBoundingClientRect().top) / (vh * 0.8));
       }
     }
+    drawCost(q);
   }
+  document.fonts.ready.then(() => requestAnimationFrame(onScroll));
   let ticking = false;
   function onScroll() {
     ticking = false;

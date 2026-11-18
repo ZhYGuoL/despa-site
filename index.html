@@ -12,7 +12,7 @@
 <link rel="icon" href="assets/despa-mark.svg" type="image/svg+xml">
 <link rel="preload" href="assets/Geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261117c">
+<link rel="stylesheet" href="assets/site.css?v=20261117e">
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
@@ -104,36 +104,20 @@
 <!-- 01 COST -->
 <section class="sec cost" aria-labelledby="t-cost">
   <div class="cost-pin">
-  <div class="sec-head">
-    <p class="eyebrow">01</p>
-    <h2 id="t-cost" data-t="cost.h">What one error costs</h2>
-  </div>
-  <div class="cost-body">
-    <div class="rates">
-      <div class="rate flat">
-        <p class="rate-k" data-t="cost.rate">Import duty rate</p>
-        <span class="big" data-n="6">0% → 6%</span>
-        <div class="state">
-          <span class="state-a"><span class="badge green" data-t="pass">PASS</span><span data-t="cost.with">With the Chile–China FTA Form F, except the exclusion list</span></span>
-          <span class="state-b"><span class="badge red" data-t="fail">FAIL</span><span data-t="cost.without">General duty, without a valid Form F</span></span>
-        </div>
+    <div class="sec-head">
+      <p class="eyebrow">01</p>
+      <h2 id="t-cost" data-t="cost.h">What one error costs</h2>
+    </div>
+    <div class="cost-body">
+      <canvas class="cost-cv" id="cost-cv" aria-hidden="true"></canvas>
+      <div class="cost-num">
+        <p class="rate-k" data-t="cost.gap">Paid extra</p>
+        <span class="big money" data-n="3570">US$ 3,570</span>
+        <p class="src" data-t="cost.src">One 20 ft container, US$50,000 of goods (UNCTAD average, rounded down).</p>
       </div>
     </div>
-    <div class="ledger-wrap">
-      <p class="ledger-h" data-t="cost.per">One 20 ft container with US$50,000 of goods (CIF)</p>
-      <table class="ledger">
-        <thead><tr><th></th><th data-t="cost.c1">No FTA</th><th data-t="cost.c2">With FTA</th></tr></thead>
-        <tbody>
-          <tr><th data-t="cost.duty">Duty</th><td data-n="3000">US$ 3,000</td><td data-n="0">US$ 0</td></tr>
-          <tr><th data-t="cost.vat">VAT 19%</th><td data-n="10070">US$ 10,070</td><td data-n="9500">US$ 9,500</td></tr>
-          <tr class="sum"><th data-t="cost.total">Total</th><td data-n="13070">US$ 13,070</td><td data-n="9500">US$ 9,500</td></tr>
-          <tr class="gap"><th data-t="cost.gap">Paid extra</th><td data-n="3570">US$ 3,570</td><td></td></tr>
-        </tbody>
-      </table>
-      <p class="note" data-t="cost.note">If the description or HS code on the Form F does not match the invoice, customs can deny the preference. Despa compares the Form F with the invoice before the shipment arrives.</p>
-      <p class="src" data-t="cost.src">US$50,000 is rounded down from the world average of about US$54,500 of goods per 20 ft container (UNCTAD, 2020 data).</p>
-    </div>
-  </div>
+    <p class="sr" data-t="cost.sr">Without a valid Form F, one 20 ft container with US$50,000 of goods pays US$3,570 more: US$3,000 of duty and US$570 of VAT.</p>
+    <span hidden data-t="cost.duty">Duty</span><span hidden data-t="cost.vat">VAT 19%</span><span hidden data-t="cost.stamp.ok">0% duty</span><span hidden data-t="cost.stamp.bad">Error</span>
   </div>
 </section>
 
@@ -423,8 +407,8 @@
 
 </main>
 
-<script src="assets/build-time.js?v=20261117c"></script>
-<script src="assets/site.js?v=20261117c"></script>
-<script type="module" src="assets/scene.js?v=20261117c"></script>
+<script src="assets/build-time.js?v=20261117e"></script>
+<script src="assets/site.js?v=20261117e"></script>
+<script type="module" src="assets/scene.js?v=20261117e"></script>
 </body>
 </html>
