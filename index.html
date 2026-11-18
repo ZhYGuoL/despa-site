@@ -12,7 +12,7 @@
 <link rel="icon" href="assets/despa-mark.svg" type="image/svg+xml">
 <link rel="preload" href="assets/Geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261117e">
+<link rel="stylesheet" href="assets/site.css?v=20261117g">
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
@@ -108,16 +108,35 @@
       <p class="eyebrow">01</p>
       <h2 id="t-cost" data-t="cost.h">What one error costs</h2>
     </div>
-    <div class="cost-body">
-      <canvas class="cost-cv" id="cost-cv" aria-hidden="true"></canvas>
-      <div class="cost-num">
-        <p class="rate-k" data-t="cost.gap">Paid extra</p>
-        <span class="big money" data-n="3570">US$ 3,570</span>
-        <p class="src" data-t="cost.src">One 20 ft container, US$50,000 of goods (UNCTAD average, rounded down).</p>
+    <div class="chart" aria-hidden="true">
+      <div class="crow" data-row="a">
+        <div class="rl"><span class="badge green" data-t="pass">PASS</span><span class="rt2" data-t="cost.row.ok">Valid Form F</span></div>
+        <div class="track">
+          <i class="bseg goods" style="--l:0;--w:76.923"><span data-t="cost.goodsv">Goods US$ 50,000</span></i><i class="bseg vat" style="--l:76.923;--w:14.615"><span data-t="cost.vat">VAT 19%</span></i>
+        </div>
       </div>
+      <div class="crow" data-row="b">
+        <div class="rl"><span class="badge red b-fail" data-t="fail">FAIL</span><span class="rt2" data-t="cost.row.bad">Form F with an error</span></div>
+        <div class="track">
+          <i class="bseg goods" style="--l:0;--w:76.923"></i><i class="bseg vat" style="--l:76.923;--w:14.615"></i><i class="bseg red" style="--l:91.538;--w:4.615"></i><i class="bseg red red2" style="--l:96.154;--w:0.877"></i>
+          <span class="redlab" data-t="cost.red">Duty + VAT</span>
+        </div>
+      </div>
+      <div class="crow cgap">
+        <div></div>
+        <div class="track gaptrack">
+          <i class="brace" style="--l:91.538;--w:5.492"></i>
+          <div class="extra">
+            <span class="rate-k" data-t="cost.gap">Paid extra</span>
+            <span class="big money" data-n="3570">US$ 3,570</span>
+            <span class="pct" data-t="cost.pct">+7.1% of the goods</span>
+          </div>
+        </div>
+      </div>
+      <div class="overlay"><i class="guide"></i></div>
     </div>
+    <p class="src" data-t="cost.src">One 20 ft container, US$50,000 of goods (UNCTAD average, rounded down).</p>
     <p class="sr" data-t="cost.sr">Without a valid Form F, one 20 ft container with US$50,000 of goods pays US$3,570 more: US$3,000 of duty and US$570 of VAT.</p>
-    <span hidden data-t="cost.duty">Duty</span><span hidden data-t="cost.vat">VAT 19%</span><span hidden data-t="cost.stamp.ok">0% duty</span><span hidden data-t="cost.stamp.bad">Error</span>
   </div>
 </section>
 
@@ -407,8 +426,8 @@
 
 </main>
 
-<script src="assets/build-time.js?v=20261117e"></script>
-<script src="assets/site.js?v=20261117e"></script>
-<script type="module" src="assets/scene.js?v=20261117e"></script>
+<script src="assets/build-time.js?v=20261117g"></script>
+<script src="assets/site.js?v=20261117g"></script>
+<script type="module" src="assets/scene.js?v=20261117g"></script>
 </body>
 </html>
