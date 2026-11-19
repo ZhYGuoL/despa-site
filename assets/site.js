@@ -10,7 +10,6 @@
     "nav.rules": "Qué revisa",
     "nav.privacy": "Privacidad",
     "nav.cta": "Lista de espera",
-    "hero.eyebrow": "Importaciones China → Chile",
     "h1a": "Revisión",
     "h1b": "de documentos",
     "h1c": "de importación",
@@ -248,7 +247,8 @@
     ticking = false;
     costTick(scrollY, innerHeight);
     const y = scrollY, vh = innerHeight;
-    top.classList.toggle("solid", y > intro.offsetHeight - 80);
+    // the hero is dark; once the paper section covers the top of the screen, the header goes back to dark text
+    top.classList.toggle("solid", y > document.querySelector(".hero").offsetHeight - 72);
     if (!still) {
       for (const r of rows) {
         const third = r.scrollWidth / 3;

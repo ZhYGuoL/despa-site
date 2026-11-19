@@ -20,7 +20,7 @@ try {
 renderer.setClearColor(0x000000, 0);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.NeutralToneMapping;
-renderer.toneMappingExposure = 1.0;
+renderer.toneMappingExposure = (window.SCENE && window.SCENE.exposure) || 1.0;
 
 const scene = new THREE.Scene();
 const pmrem = new THREE.PMREMGenerator(renderer);
@@ -102,7 +102,7 @@ const back = new THREE.Mesh(endGeo, paint); back.rotation.y = -Math.PI / 2; back
 // roof with shallow dents, floor, inside lining
 box.add(boxM(L - 0.2, 0.04, W - 0.16, paint, 0, H / 2 - 0.05, 0));
 for (let i = 0; i < 9; i++) box.add(boxM(0.36, 0.012, W - 0.34, framePaint, -L / 2 + 0.55 + i * ((L - 1.1) / 8), H / 2 - 0.025, 0));
-box.add(boxM(L - 0.3, 0.05, W - 0.3, wood, 0, -H / 2 + 0.2, 0));
+box.add(boxM(L - 0.34, 0.05, W - 0.34, wood, -0.02, -H / 2 + 0.2, 0));
 const lining = new THREE.Mesh(new THREE.BoxGeometry(L - 0.26, H - 0.42, W - 0.26), inside);
 lining.position.set(-0.02, -0.01, 0);
 box.add(lining);
@@ -110,7 +110,8 @@ box.add(lining);
 // frame: corner posts, rails, castings
 for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
   box.add(boxM(0.17, H - 0.1, 0.17, framePaint, sx * (L / 2 - 0.085), 0, sz * (W / 2 - 0.085)));
-  for (const sy of [-1, 1]) box.add(boxM(0.19, 0.12, 0.17, casting, sx * (L / 2 - 0.09), sy * (H / 2 - 0.06), sz * (W / 2 - 0.085)));
+  // corner castings stand 12 mm proud of every frame face, so no face of theirs shares a plane with the posts (no z-fighting)
+  for (const sy of [-1, 1]) box.add(boxM(0.2, 0.13, 0.2, casting, sx * (L / 2 + 0.012 - 0.1), sy * (H / 2 + 0.012 - 0.065), sz * (W / 2 + 0.012 - 0.1)));
 }
 for (const sz of [-1, 1]) {
   box.add(boxM(L - 0.36, 0.13, 0.11, framePaint, 0, H / 2 - 0.08, sz * (W / 2 - 0.06)));
@@ -355,7 +356,8 @@ function resize() {
   camera.aspect = vw / vh;
   camera.fov = 22;
   camera.position.set(0, 0, (vh / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
-  camera.near = 10; camera.far = camera.position.z * 3;
+  // a tight depth range: everything drawn sits within ~1,600 px of the page plane, so depth precision stays high
+  camera.near = Math.max(10, camera.position.z - 1600); camera.far = camera.position.z + 1600;
   camera.updateProjectionMatrix();
 }
 
@@ -369,6 +371,7 @@ const fitScale = (r, rx, ry) => {
 const toWorld = (cx, cy, z = 0) => new THREE.Vector3(cx - vw / 2, vh / 2 - cy, z);
 
 const state = { p: 0, q: 0, door: 0 };
+const SWAY = !still && !!(window.SCENE && window.SCENE.sway);
 const DOC_IN = 0.74;   // document size inside the box: 1.57 m tall, the door opening is 2.0 m
 const qTmp = new THREE.Quaternion(), qDocIn = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
 const v1 = new THREE.Vector3(), v2 = new THREE.Vector3();
@@ -394,6 +397,9 @@ function update() {
     rx = lerp(HERO_POSE.rx, LAND_POSE.rx, e);
     ry = lerp(HERO_POSE.ry, LAND_POSE.ry, e);
     rz = Math.sin(Math.PI * p) * 0.06;          // a little swing on the way down, like a crane load
+    // optional ambient loop (window.SCENE.sway): the load sways slowly on its cables while it waits in the hero.
+    // sine in-out, about 7 s a cycle, under a degree, fades out as the flight starts, off under reduced motion
+    if (SWAY) rz += Math.sin(performance.now() / 7000 * Math.PI * 2) * 0.011 * (1 - smooth(0, 0.15, p));
   } else {
     cx = aR.left + aR.width / 2;
     cy = aR.top + aR.height / 2;
@@ -473,6 +479,7 @@ function frame() {
   update();
   renderer.render(scene, camera);
   if (!shown) { shown = true; root.classList.remove("no-3d"); }
+  if (SWAY && state.p < 0.15) ask();
 }
 const ask = () => { if (!raf) raf = requestAnimationFrame(frame); };
 addEventListener("scroll", ask, { passive: true });
@@ -484,6 +491,27 @@ frame();
 // For checks and for making the static poster (assets/container.png).
 window.__despa = {
   state,
+  // Coplanar check: pairs of box parts whose same-facing faces sit within 3 mm of each other and overlap (z-fighting).
+  coplanar() {
+    const parts = [];
+    box.children.forEach((m) => {
+      if (!m.isMesh || m.geometry.type !== "BoxGeometry" || m.rotation.x || m.rotation.y || m.rotation.z) return;
+      const p = m.geometry.parameters, c = m.position;
+      parts.push({ name: m.material === casting ? "casting" : m.material === framePaint ? "frame" : m.material === paint ? "paint" : "other",
+        min: [c.x - p.width / 2, c.y - p.height / 2, c.z - p.depth / 2], max: [c.x + p.width / 2, c.y + p.height / 2, c.z + p.depth / 2] });
+    });
+    const hits = [];
+    for (let i = 0; i < parts.length; i++) for (let j = i + 1; j < parts.length; j++) {
+      const a = parts[i], b = parts[j];
+      for (let ax = 0; ax < 3; ax++) for (const side of ["min", "max"]) {
+        if (Math.abs(a[side][ax] - b[side][ax]) > 0.003) continue;
+        const o = [0, 1, 2].filter((k) => k !== ax);
+        const ov = o.every((k) => Math.min(a.max[k], b.max[k]) - Math.max(a.min[k], b.min[k]) > 0.001);
+        if (ov) hits.push(`${a.name}#${i} vs ${b.name}#${j} on ${"xyz"[ax]}.${side}`);
+      }
+    }
+    return hits;
+  },
   clip() {
     update();
     box.updateMatrixWorld(true);
@@ -507,7 +535,7 @@ window.__despa = {
     const keep = [vw, vh];
     renderer.setPixelRatio(1); renderer.setSize(w, h, false);
     vw = w; vh = h;
-    camera.aspect = w / h; camera.position.set(0, 0, (h / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))); camera.far = camera.position.z * 3; camera.updateProjectionMatrix();
+    camera.aspect = w / h; camera.position.set(0, 0, (h / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))); camera.near = Math.max(10, camera.position.z - 1600); camera.far = camera.position.z + 1600; camera.updateProjectionMatrix();
     pose.position.set(0, h * 0.04, 0); pose.rotation.set(HERO_POSE.rx, HERO_POSE.ry, 0); pose.scale.setScalar(0.9 * fitScale({ width: w, height: h }, HERO_POSE.rx, HERO_POSE.ry));
     leafA.hinge.rotation.y = 0; leafB.hinge.rotation.y = 0; docs.forEach((d) => (d.mesh.visible = false));
     spreader.visible = false; cables.visible = false;
