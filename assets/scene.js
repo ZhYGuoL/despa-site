@@ -216,6 +216,23 @@ shadow.rotation.x = -Math.PI / 2;
 shadow.position.y = -H / 2 - 0.015;
 box.add(shadow);
 
+// spreader and crane cables: the box hangs from them in the hero, and they let go as it lands
+const rigMat = new THREE.MeshStandardMaterial({ color: 0x3a4148, roughness: 0.6, metalness: 0.5, transparent: true });
+const spreader = new THREE.Group();
+spreader.add(boxM(L * 0.94, 0.16, 0.16, rigMat, 0, 0, W * 0.4));
+spreader.add(boxM(L * 0.94, 0.16, 0.16, rigMat, 0, 0, -W * 0.4));
+spreader.add(boxM(0.22, 0.2, W * 0.88, rigMat, 0, 0.02, 0));
+for (const sx of [-1, 1]) spreader.add(boxM(0.2, 0.18, W * 0.88, rigMat, sx * L * 0.45, 0, 0));
+spreader.position.y = H / 2 + 0.34;
+box.add(spreader);
+const RIG = [[-1, -1], [-1, 1], [1, -1], [1, 1]].map(([a, b]) => new THREE.Vector3(a * L * 0.38, H / 2 + 0.42, b * W * 0.4));
+const cableGeo = new THREE.BufferGeometry();
+cableGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(8 * 3), 3));
+const cableMat = new THREE.LineBasicMaterial({ color: 0x2b333b, transparent: true });
+const cables = new THREE.LineSegments(cableGeo, cableMat);
+cables.frustumCulled = false;
+scene.add(cables);
+
 // ---------- the four documents ----------
 // Drawn as characters, not as legible forms: each one is a single picture and one value you can read
 // at the size it ends up on screen. The HTML labels under the row name them (and translate).
@@ -388,6 +405,22 @@ function update() {
   pose.rotation.set(rx, ry, rz);
   pose.scale.setScalar(sc);
 
+  // cables: from the spreader up to one block far above the top of the screen; released between p 0.72 and 0.92
+  const rig = 1 - smooth(0.72, 0.92, p);
+  rigMat.opacity = rig; cableMat.opacity = rig * 0.85;
+  spreader.visible = rig > 0.01; cables.visible = rig > 0.01;
+  if (rig > 0.01) {
+    pose.updateMatrixWorld(true);
+    const apex = new THREE.Vector3(pose.position.x, vh / 2 + vh * 0.9, 0);
+    const arr = cableGeo.attributes.position.array;
+    RIG.forEach((pt, i) => {
+      const w = pt.clone().applyMatrix4(box.matrixWorld);
+      const top = apex.clone().add(new THREE.Vector3((pt.x > 0 ? 1 : -1) * 6 * sc / 30, 0, (pt.z > 0 ? 1 : -1) * 4 * sc / 30));
+      arr.set([w.x, w.y, w.z, top.x, top.y, top.z], i * 6);
+    });
+    cableGeo.attributes.position.needsUpdate = true;
+  }
+
   // doors
   const door = smooth(0.1, 0.42, q);
   state.door = door;
@@ -477,6 +510,7 @@ window.__despa = {
     camera.aspect = w / h; camera.position.set(0, 0, (h / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))); camera.far = camera.position.z * 3; camera.updateProjectionMatrix();
     pose.position.set(0, h * 0.04, 0); pose.rotation.set(HERO_POSE.rx, HERO_POSE.ry, 0); pose.scale.setScalar(0.9 * fitScale({ width: w, height: h }, HERO_POSE.rx, HERO_POSE.ry));
     leafA.hinge.rotation.y = 0; leafB.hinge.rotation.y = 0; docs.forEach((d) => (d.mesh.visible = false));
+    spreader.visible = false; cables.visible = false;
     renderer.render(scene, camera);
     const url = canvas.toDataURL("image/png");
     [vw, vh] = keep; resize(); frame();
